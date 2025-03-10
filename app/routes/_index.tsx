@@ -24,6 +24,7 @@ export default function Index() {
   const { t } = useJsonLoaderData<typeof loader>();
   const [language, setLanguage] = useLanguage();
   const [theme, setTheme] = useTheme();
+  console.log('theme:', theme);
 
   return (
     <div className="flex items-center justify-center h-screen bg-muted-foreground/10">
