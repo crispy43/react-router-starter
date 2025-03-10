@@ -1,19 +1,19 @@
-import { LinksFunction, LoaderFunctionArgs } from '@remix-run/node';
 import {
   Links,
+  type LinksFunction,
   Meta,
   Outlet,
   Scripts,
   ScrollRestoration,
-  useLoaderData,
-} from '@remix-run/react';
+} from 'react-router';
 
 import globalStyles from '~/styles/global.css?url';
 
 import { getLanguageSession, getThemeSession } from './.server/services/session.service';
+import type { Route } from './+types/root';
 import { PreventFlashOnWrongTheme, ThemeProvider, useTheme } from './hooks/use-theme';
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
+export const loader = async ({ request }: Route.LoaderArgs) => {
   const { getLanguage } = await getLanguageSession(request);
   const { getTheme } = await getThemeSession(request);
   return { lang: getLanguage(), ssrTheme: getTheme() };
@@ -23,8 +23,7 @@ export const links: LinksFunction = () => {
   return [{ rel: 'stylesheet', href: globalStyles }];
 };
 
-export const App = () => {
-  const { lang, ssrTheme } = useLoaderData<typeof loader>();
+export const App = ({ lang, ssrTheme }: Route.ComponentProps['loaderData']) => {
   const [theme] = useTheme();
 
   return (
@@ -45,12 +44,12 @@ export const App = () => {
   );
 };
 
-export default function AppWithProviders() {
-  const { ssrTheme } = useLoaderData<typeof loader>();
+export default function AppWithProviders({ loaderData }: Route.ComponentProps) {
+  const { lang, ssrTheme } = loaderData;
 
   return (
     <ThemeProvider specifiedTheme={ssrTheme} themeAction="/api/theme">
-      <App />
+      <App lang={lang} ssrTheme={ssrTheme} />
     </ThemeProvider>
   );
 }

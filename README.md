@@ -1,6 +1,6 @@
-# Remix Starter
+# React Router Starter
 
-[tailwindcss](https://tailwindcss.com/)와 [shadcn/ui](https://ui.shadcn.com/)가 적용된 [Remix](https://remix.run/) 스타터 탬플릿입니다.
+[tailwindcss](https://tailwindcss.com/)와 [shadcn/ui](https://ui.shadcn.com/)가 적용된 [React Router](https://reactrouter.com/) 스타터 탬플릿입니다.
 라이트&다크 테마 변경과 다국어 현지화 언어셋을 사용할 수 있습니다.
 [Ajv](https://ajv.js.org/)가 포함되어 있으므로 데이터 구조의 유효성 검사는 [JSON schema](https://json-schema.org/) 형식을 사용하는 것을 권장합니다.
 

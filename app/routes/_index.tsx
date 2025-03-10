@@ -1,14 +1,14 @@
-import { LoaderFunctionArgs, MetaFunction } from '@remix-run/node';
+import type { LoaderFunctionArgs, MetaFunction } from 'react-router';
 
 import { localize } from '~/.server/lib/localization';
-import { WelcomeJson } from '~/.server/locales/types';
+import type { WelcomeJson } from '~/.server/locales/types';
 import { Theme } from '~/common/constants';
 import { Button } from '~/components/ui/button';
 import { Card, CardContent, CardHeader } from '~/components/ui/card';
 import { Label } from '~/components/ui/label';
-import { useJsonLoaderData } from '~/hooks/use-json-data';
-import { useLanguage } from '~/hooks/use-language';
 import { useTheme } from '~/hooks/use-theme';
+
+import type { Route } from './+types/_index';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const t = await localize<WelcomeJson>(request, 'welcome');
@@ -20,11 +20,9 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
   return [{ title: t.meta.title }, { name: 'description', content: t.meta.description }];
 };
 
-export default function Index() {
-  const { t } = useJsonLoaderData<typeof loader>();
-  const [language, setLanguage] = useLanguage();
+export default function Index({ loaderData }: Route.ComponentProps) {
+  const { t } = loaderData;
   const [theme, setTheme] = useTheme();
-  console.log('theme:', theme);
 
   return (
     <div className="flex items-center justify-center h-screen bg-muted-foreground/10">
@@ -43,18 +41,6 @@ export default function Index() {
               onClick={() => setTheme(theme === Theme.DARK ? Theme.LIGHT : Theme.DARK)}
             >
               {theme === Theme.DARK ? Theme.LIGHT : Theme.DARK}
-            </Button>
-          </div>
-          <div className="flex flex-col justify-center gap-2">
-            <div className="flex items-center gap-2">
-              <Label className="text-lg text-muted-foreground">{t.word.language}:</Label>
-              <p className="text-lg">{language}</p>
-            </div>
-            <Button
-              className="w-24"
-              onClick={() => setLanguage(language === 'en' ? 'ko' : 'en')}
-            >
-              {language === 'en' ? 'ko' : 'en'}
             </Button>
           </div>
         </CardContent>

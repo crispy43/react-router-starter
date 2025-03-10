@@ -1,4 +1,4 @@
-import { ActionFunctionArgs } from '@remix-run/node';
+import type { ActionFunctionArgs } from 'react-router';
 
 import { themeAction } from '~/.server/controllers/theme.controller';
 import { control } from '~/.server/lib/utils';

@@ -1,9 +1,9 @@
 import {
   createContext,
-  Dispatch,
-  ReactNode,
-  RefObject,
-  SetStateAction,
+  type Dispatch,
+  type ReactNode,
+  type RefObject,
+  type SetStateAction,
   use,
   useCallback,
   useEffect,

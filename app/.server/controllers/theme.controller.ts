@@ -1,4 +1,4 @@
-import { ActionFunctionArgs } from '@remix-run/node';
+import type { ActionFunctionArgs } from 'react-router';
 
 import { Theme } from '~/common/constants';
 import { isTheme } from '~/hooks/use-theme';

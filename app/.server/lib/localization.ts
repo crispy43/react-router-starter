@@ -2,7 +2,7 @@ import { resolveAcceptLanguage } from 'resolve-accept-language';
 
 import { DEFAULT_LANGUAGE, LANGUAGES } from '~/common/constants';
 
-import { CommonJson, ErrorJson } from '../locales/types';
+import type { CommonJson, ErrorJson } from '../locales/types';
 import { getLanguageSession } from '../services/session.service';
 
 // * language 코드

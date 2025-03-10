@@ -1,4 +1,4 @@
-import { ActionFunctionArgs } from '@remix-run/node';
+import type { ActionFunctionArgs } from 'react-router';
 
 import { languageAction } from '~/.server/controllers/language.controller';
 import { control } from '~/.server/lib/utils';

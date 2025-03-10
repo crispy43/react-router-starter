@@ -1,6 +1,6 @@
-import { ActionFunctionArgs } from '@remix-run/node';
+import type { LoaderFunctionArgs } from 'react-router';
 
-import { UpdateLanguage, updateLanguageSchema } from '~/.server/schemas/language';
+import { type UpdateLanguage, updateLanguageSchema } from '~/.server/schemas/language';
 import { replaceT } from '~/lib/utils';
 
 import { InvalidException, MethodNotAllowedException } from '../lib/exception';
@@ -8,7 +8,7 @@ import { isLanguage, localizedError } from '../lib/localization';
 import { validateFormData } from '../lib/utils';
 import { getLanguageSession } from '../services/session.service';
 
-export const languageAction = async ({ request }: ActionFunctionArgs) => {
+export const languageAction = async ({ request }: LoaderFunctionArgs) => {
   switch (request.method) {
     case 'POST': {
       const payload = await validateFormData<UpdateLanguage>(

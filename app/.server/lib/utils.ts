@@ -1,7 +1,6 @@
-import { ActionFunctionArgs, LoaderFunctionArgs } from '@remix-run/node';
-import { Params } from '@remix-run/react';
+import type { ActionFunctionArgs, LoaderFunctionArgs, Params } from 'react-router';
 
-import { ToJson } from '~/common/types';
+import type { ToJson } from '~/common/types';
 import ajv from '~/lib/ajv';
 
 import { DeferredData } from './defer';

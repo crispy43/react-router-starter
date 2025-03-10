@@ -1,4 +1,4 @@
-import { createCookieSessionStorage } from '@remix-run/node';
+import { createCookieSessionStorage } from 'react-router';
 
 import { getAcceptLanguage, isLanguage } from '~/.server/lib/localization';
 import { Theme } from '~/common/constants';
