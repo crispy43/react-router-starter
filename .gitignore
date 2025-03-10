@@ -10,3 +10,6 @@
 # dotenv environment variable files
 .env
 .env.local
+
+# React Router
+/.react-router/
