@@ -2,6 +2,7 @@ import { createContext, type Dispatch, type SetStateAction, use, useState } from
 
 import { DEFAULT_LANGUAGE, LANGUAGES } from '~/common/constants';
 
+import type { Route } from '../routes/apis/+types/language';
 import { useFetcherCallback } from './use-fetcher-callback';
 
 // * language 검증
@@ -30,10 +31,12 @@ export const LanguageProvider = ({
     return DEFAULT_LANGUAGE.split('-')[0];
   });
 
-  const fetcher = useFetcherCallback(({ message, language }) => {
-    if (message) console.error(message);
-    if (language) setLanguage(language);
-  });
+  const fetcher = useFetcherCallback<Route.ComponentProps['actionData']>(
+    ({ message, language }) => {
+      if (message) console.error(message);
+      if (language) setLanguage(language);
+    },
+  );
 
   const handleChange = (lang: string) => {
     if (isLanguage(lang)) {
