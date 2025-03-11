@@ -1,4 +1,4 @@
-import { ErrorObject } from 'ajv';
+import type { ErrorObject } from 'ajv';
 
 export class HttpException extends Error {
   status: number;

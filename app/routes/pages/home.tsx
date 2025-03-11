@@ -8,7 +8,7 @@ import { Card, CardContent, CardHeader } from '~/components/ui/card';
 import { Label } from '~/components/ui/label';
 import { useTheme } from '~/hooks/use-theme';
 
-import type { Route } from './+types/_index';
+import type { Route } from './+types/home';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const t = await localize<WelcomeJson>(request, 'welcome');
@@ -20,9 +20,10 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
   return [{ title: t.meta.title }, { name: 'description', content: t.meta.description }];
 };
 
-export default function Index({ loaderData }: Route.ComponentProps) {
+export default function Home({ loaderData }: Route.ComponentProps) {
   const { t } = loaderData;
   const [theme, setTheme] = useTheme();
+  console.log('theme', theme);
 
   return (
     <div className="flex items-center justify-center h-screen bg-muted-foreground/10">
