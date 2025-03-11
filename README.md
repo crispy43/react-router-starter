@@ -348,7 +348,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
 ```json
 {
-  "welcome": "Remix에 오신 것을 환영합니다!"
+  "welcome": "React Router에 오신 것을 환영합니다!"
 }
 ```
 
@@ -360,8 +360,8 @@ export type WelcomeJson = typeof import('../locales/en/welcome.json');
 화면에 언어 텍스트 적용 아래 코드처럼 `t`를 `useJsonLoaderData` 훅으로 가져와서 사용합니다.
 
 ```tsx
-// /app/.server/locales/en/welcome.json = { "welcome": "Welcome to Remix!" }
-// /app/.server/locales/ko/welcome.json = { "welcome": "Remix에 오신 것을 환영합니다!" }
+// /app/.server/locales/en/welcome.json = { "welcome": "Welcome to React Router!" }
+// /app/.server/locales/ko/welcome.json = { "welcome": "React Router에 오신 것을 환영합니다!" }
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const t = await localize<WelcomeJson>(request, 'welcome');
@@ -371,8 +371,8 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 export default function Index({ loaderData }: Route.ComponentProps) {
   const { t } = loaderData;
   return <p>{t.welcome}</p>;
-  // 언어가 en인 경우 <p>Welcome to Remix!</p>
-  // 언어가 ko인 경우 <p>Remix에 오신 것을 환영합니다!</p>
+  // 언어가 en인 경우 <p>Welcome to React Router!</p>
+  // 언어가 ko인 경우 <p>React Router에 오신 것을 환영합니다!</p>
 }
 ```
 
