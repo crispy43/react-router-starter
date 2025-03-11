@@ -1,7 +1,8 @@
 import { createCookieSessionStorage } from 'react-router';
 
-import { getAcceptLanguage, isLanguage } from '~/.server/lib/localization';
+import { getAcceptLanguage } from '~/.server/lib/localization';
 import { Theme } from '~/common/constants';
+import { isLanguage } from '~/hooks/use-language';
 import { isTheme } from '~/hooks/use-theme';
 
 // * 언어 세션

@@ -18,10 +18,6 @@ export const getAcceptLanguage = (request: Request) => {
   );
 };
 
-// * language 검증
-export const isLanguage = (language: string) =>
-  LANGUAGES.map((lang) => lang.split('-')[0]).includes(language);
-
 // * 현지화 번역 언어셋
 export const localize: <T>(
   request: Request,

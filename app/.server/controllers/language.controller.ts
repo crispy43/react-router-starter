@@ -1,11 +1,12 @@
 import type { LoaderFunctionArgs } from 'react-router';
 
 import { type UpdateLanguage, updateLanguageSchema } from '~/.server/schemas/language';
+import { isLanguage } from '~/hooks/use-language';
 import { replaceT } from '~/lib/utils';
 
 import { InvalidException, MethodNotAllowedException } from '../lib/exception';
-import { isLanguage, localizedError } from '../lib/localization';
-import { validateFormData } from '../lib/utils';
+import { localizedError } from '../lib/localization';
+import { toJson, validateFormData } from '../lib/utils';
 import { getLanguageSession } from '../services/session.service';
 
 export const languageAction = async ({ request }: LoaderFunctionArgs) => {
@@ -23,10 +24,10 @@ export const languageAction = async ({ request }: LoaderFunctionArgs) => {
       }
       const languageSession = await getLanguageSession(request);
       languageSession.setLanguage(payload.language);
-      return new Response(null, {
-        status: 204,
-        headers: { 'Set-Cookie': await languageSession.commit() },
-      });
+      return toJson(
+        { language: payload.language },
+        { headers: { 'Set-Cookie': await languageSession.commit() } },
+      );
     }
 
     default: {

@@ -11,6 +11,7 @@ import globalStyles from '~/styles/global.css?url';
 
 import { getLanguageSession, getThemeSession } from './.server/services/session.service';
 import type { Route } from './+types/root';
+import { LanguageProvider } from './hooks/use-language';
 import { PreventFlashOnWrongTheme, ThemeProvider, useTheme } from './hooks/use-theme';
 
 export const loader = async ({ request }: Route.LoaderArgs) => {
@@ -48,8 +49,10 @@ export default function AppWithProviders({ loaderData }: Route.ComponentProps) {
   const { lang, ssrTheme } = loaderData;
 
   return (
-    <ThemeProvider specifiedTheme={ssrTheme} themeAction="/api/theme">
-      <App lang={lang} ssrTheme={ssrTheme} />
-    </ThemeProvider>
+    <LanguageProvider specifiedLanguage={lang} languageAction="/api/language">
+      <ThemeProvider specifiedTheme={ssrTheme} themeAction="/api/theme">
+        <App lang={lang} ssrTheme={ssrTheme} />
+      </ThemeProvider>
+    </LanguageProvider>
   );
 }
