@@ -4,6 +4,7 @@ import {
   isRouteErrorResponse,
   Links,
   type LinksFunction,
+  type LoaderFunctionArgs,
   Meta,
   Outlet,
   Scripts,
@@ -15,9 +16,11 @@ import type { Route } from './+types/root';
 import { LanguageProvider } from './hooks/use-language';
 import { PreventFlashOnWrongTheme, ThemeProvider, useTheme } from './hooks/use-theme';
 
-export const loader = async ({ request }: Route.LoaderArgs) => {
-  const { getLanguage } = await getLanguageSession(request);
-  const { getTheme } = await getThemeSession(request);
+export const loader = async ({ request }: LoaderFunctionArgs) => {
+  const [{ getLanguage }, { getTheme }] = await Promise.all([
+    getLanguageSession(request),
+    getThemeSession(request),
+  ]);
   return { lang: getLanguage(), ssrTheme: getTheme() };
 };
 
@@ -63,13 +66,13 @@ export default function AppWithProviders({ loaderData }: Route.ComponentProps) {
   return (
     <LanguageProvider specifiedLanguage={lang} languageAction="/api/language">
       <ThemeProvider specifiedTheme={ssrTheme} themeAction="/api/theme">
-        <App lang={lang} ssrTheme={ssrTheme} />
+        <App {...loaderData} />
       </ThemeProvider>
     </LanguageProvider>
   );
 }
 
-export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
+export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => {
   let message = 'Oops!';
   let details = 'An unexpected error occurred.';
   let stack: string | undefined;
@@ -96,4 +99,4 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
       )}
     </main>
   );
-}
+};
