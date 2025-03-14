@@ -25,8 +25,6 @@ export default function Home({ loaderData }: Route.ComponentProps) {
   const { t } = loaderData;
   const [language, setLanguage] = useLanguage();
   const [theme, setTheme] = useTheme();
-  console.log('theme', theme);
-  console.log('language', language);
 
   return (
     <div className="flex items-center justify-center h-screen bg-muted-foreground/10">
