@@ -27,8 +27,8 @@ export default function Home({ loaderData }: Route.ComponentProps) {
   const [theme, setTheme] = useTheme();
 
   return (
-    <div className="flex items-center justify-center h-screen bg-muted-foreground/10">
-      <Card className="flex flex-col w-full max-w-sm">
+    <div className="flex h-screen items-center justify-center bg-muted-foreground/10">
+      <Card className="flex w-full max-w-sm flex-col">
         <CardHeader>
           <h1 className="text-xl font-bold">{t.welcome}</h1>
         </CardHeader>

@@ -22,7 +22,7 @@ module.exports = {
   ignorePatterns: ['!**/.server', '!**/.client'],
 
   // Base config
-  extends: ['plugin:@typescript-eslint/recommended'],
+  extends: ['plugin:@typescript-eslint/recommended', 'prettier'],
   plugins: ['simple-import-sort', 'unused-imports'],
 
   overrides: [
