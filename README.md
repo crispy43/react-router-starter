@@ -49,7 +49,7 @@ yarn start
 
 ```plaintext
 ├── .vscode
-│   └── settings.json       # VS Code 설정 파일
+│   └── settings.json       # VS Code 설정 파일 (저장시 eslint와 prettier 포맷팅)
 ├── .yarn
 │   ├── install-state.gz    # 설치 패키지 상태 파일
 │   └── releases            # Yarn 파일
@@ -83,7 +83,7 @@ yarn start
 ├── .eslintrc.cjs           # ES Lint 설정 파일
 ├── .gitignore              # Git 제외 파일
 ├── .prettierignore         # Prettier 제외 파일
-├── .prettierrc             # Prettier 설정 파일
+├── .prettierrc.cjs         # Prettier 설정 파일
 ├── .yarnrc.yml             # Yarn 설정 파일
 ├── components.json         # shadcn/ui 설정 파일
 ├── package.json            # node.js 패키지 설정 파일
@@ -91,12 +91,37 @@ yarn start
 ├── README.md               # README 파일
 ├── tsconfig.json           # 타입스크립트 설정
 ├── vite.config.ts          # Vite 설정
+├── vite.env.d.ts           # Vite 환경 설정
 └── yarn.lock
 ```
 
 ## 가이드
 
 ### Hooks
+
+#### useTheme
+
+현재 테마의 확인과 테마를 변경할 수 있는 훅입니다.
+
+```typescript
+import { useTheme } from '~/hooks/use-theme';
+
+const [theme, setTheme] = useTheme();
+```
+
+`theme`의 기본 값은 시스템 테마를 따라갑니다. `setTheme()`로 테마를 변경하면 세션에 영구 저장되어 다음 접속때에도 동일한 테마가 유지됩니다.
+
+#### useLanguage
+
+현재 언어 코드를 확인하고 변경할 수 있는 훅입니다.
+
+```typescript
+import { useLanguage } from '~/hooks/use-language';
+
+const [language, setLanguage] = useLanguage();
+```
+
+`language`로 현재 적용된 언어 코드를 확인할 수 있습니다. 언어 변경은 `setLanguage('en')`처럼 변경할 언어 코드를 `setLanguage`함수의 인자로 사용하면 됩니다. 테마와 마찬가지로 세션에 영구 저장되므로 다음 접속 때도 동일한 언어 설정이 유지됩니다.
 
 #### useFetcherCallback
 
@@ -130,30 +155,6 @@ export default function Page() {
   // ...
 }
 ```
-
-#### useTheme
-
-현재 테마의 확인과 테마를 변경할 수 있는 훅입니다.
-
-```typescript
-import { useTheme } from '~/hooks/use-theme';
-
-const [theme, setTheme] = useTheme();
-```
-
-`theme`의 기본 값은 시스템 테마를 따라갑니다. `setTheme()`로 테마를 변경하면 세션에 영구 저장되어 다음 접속때에도 동일한 테마가 유지됩니다.
-
-#### useLanguage
-
-현재 언어 코드를 확인하고 변경할 수 있는 훅입니다.
-
-```typescript
-import { useLanguage } from '~/hooks/use-language';
-
-const [language, setLanguage] = useLanguage();
-```
-
-`language`로 현재 적용된 언어 코드를 확인할 수 있습니다. 언어 변경은 `setLanguage('en')`처럼 변경할 언어 코드를 `setLanguage`함수의 인자로 사용하면 됩니다. 테마와 마찬가지로 세션에 영구 저장되므로 다음 접속 때도 동일한 언어 설정이 유지됩니다.
 
 ### 유효성 검사
 
