@@ -67,6 +67,7 @@ yarn start
 │   │   ├── constants.ts    # 공통 상수
 │   │   └── types.d.ts      # 공통 타입
 │   ├── components          # 컴포넌트
+│   │   ├── svg             # svg 파일 폴더 (SVGR로 리액트 컴포넌트로 사용)
 │   │   └── ui              # shadcn/ui 컴포넌트 폴더
 │   ├── hooks               # 커스텀 훅
 │   ├── lib                 # 유틸리티
@@ -91,11 +92,26 @@ yarn start
 ├── README.md               # README 파일
 ├── tsconfig.json           # 타입스크립트 설정
 ├── vite.config.ts          # Vite 설정
-├── vite.env.d.ts           # Vite 환경 설정
 └── yarn.lock
 ```
 
 ## 가이드
+
+### SVGR
+
+[vite-plugin-svgr](https://github.com/pd4d10/vite-plugin-svgr#readme)이 적용되어 있으므로 svg 파일은 아래 코드처럼 img 태그가 아닌 리액트 컴포넌트로 임포트하여 사용할 수 있습니다. 파일 경로 뒤에 `?react`를 붙여서 임포트해야 합니다.
+
+```tsx
+import Logo from '~/components/svg/logo.svg?react';
+
+export default function SomePage() {
+  return (
+    <div>
+      <Logo />
+    </div>
+  );
+}
+```
 
 ### Hooks
 

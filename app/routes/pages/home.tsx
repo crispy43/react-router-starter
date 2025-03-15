@@ -3,6 +3,8 @@ import type { LoaderFunctionArgs, MetaFunction } from 'react-router';
 import { localize } from '~/.server/lib/localization';
 import type { WelcomeJson } from '~/.server/locales/types';
 import { Theme } from '~/common/constants';
+import LogoDark from '~/components/svg/logo-dark.svg?react';
+import LogoLight from '~/components/svg/logo-light.svg?react';
 import { Button } from '~/components/ui/button';
 import { Card, CardContent, CardHeader } from '~/components/ui/card';
 import { Label } from '~/components/ui/label';
@@ -27,7 +29,12 @@ export default function Home({ loaderData }: Route.ComponentProps) {
   const [theme, setTheme] = useTheme();
 
   return (
-    <div className="flex h-screen items-center justify-center bg-muted-foreground/10">
+    <div className="flex h-screen flex-col items-center justify-center bg-muted-foreground/10">
+      {theme === Theme.DARK ? (
+        <LogoDark className="mb-8 h-auto w-40" />
+      ) : (
+        <LogoLight className="mb-8 h-auto w-40" />
+      )}
       <Card className="flex w-full max-w-sm flex-col">
         <CardHeader>
           <h1 className="text-xl font-bold">{t.welcome}</h1>
