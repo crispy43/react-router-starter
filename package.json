@@ -9,7 +9,7 @@
     "start": "react-router-serve ./build/server/index.js",
     "typecheck": "react-router typegen && tsc",
     "lint": "eslint --fix",
-    "format": "prettier --write",
+    "format": "prettier --write .",
     "prepare": "simple-git-hooks"
   },
   "dependencies": {
@@ -71,7 +71,7 @@
   "lint-staged": {
     "*": [
       "eslint --fix",
-      "prettier --write"
+      "prettier --write ."
     ]
   },
   "simple-git-hooks": {
