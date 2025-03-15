@@ -13,7 +13,7 @@ import type { Route } from './+types/home';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
 const t = await localize<WelcomeJson>(request, 'welcome');
-  return { t };
+   return { t };
 };
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
