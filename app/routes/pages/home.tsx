@@ -12,7 +12,7 @@ import { useTheme } from '~/hooks/use-theme';
 import type { Route } from './+types/home';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-  const t = await localize<WelcomeJson>(request, 'welcome');
+const t = await localize<WelcomeJson>(request, 'welcome');
   return { t };
 };
 
