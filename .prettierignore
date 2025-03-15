@@ -1,5 +1,7 @@
 node_modules/
 build/
 /app/components/ui
-/app/components/icons
 /.react-router/
+/.vscode/
+/.yarn/
+.yarn.lock
