@@ -9,7 +9,7 @@
     "start": "react-router-serve ./build/server/index.js",
     "typecheck": "react-router typegen && tsc",
     "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
-    "format": "prettier --write",
+    "format": "prettier --write .",
     "postinstall": "husky install"
   },
   "dependencies": {
@@ -70,7 +70,7 @@
   "lint-staged": {
     "*.{js,ts,tsx}": [
       "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
-      "prettier --write"
+      "prettier --write ."
     ]
   }
 }
