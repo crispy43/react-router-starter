@@ -54,7 +54,6 @@
     "json-schema-to-ts": "^3.1.1",
     "prettier": "^3.5.3",
     "prettier-plugin-tailwindcss": "^0.6.11",
-    "pretty-quick": "^4.1.1",
     "react-router-devtools": "^1.1.6",
     "simple-git-hooks": "^2.11.1",
     "tailwindcss": "^4.0.0",
@@ -67,7 +66,13 @@
     "node": ">=20 <=22"
   },
   "packageManager": "yarn@4.7.0",
+  "lint-staged": {
+    "*": [
+      "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
+      "prettier --write ."
+    ]
+  },
   "simple-git-hooks": {
-    "pre-commit": "yarn pretty-quick --staged"
+    "pre-commit": "npx lint-staged"
   }
 }
