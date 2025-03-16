@@ -69,8 +69,10 @@
   },
   "packageManager": "yarn@4.7.0",
   "lint-staged": {
+    "*.{ts,tsx}": [
+      "react-router typegen && tsc"
+    ],
     "*.{js,jsx,ts,tsx}": [
-      "react-router typegen && tsc",
       "eslint --fix"
     ],
     "*": [
