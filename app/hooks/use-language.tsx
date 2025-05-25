@@ -3,7 +3,7 @@ import { createContext, type Dispatch, type SetStateAction, use, useState } from
 import { DEFAULT_LANGUAGE, LANGUAGES } from '~/common/constants';
 
 import type { Route } from '../routes/apis/+types/language';
-import { useFetcherWithCallback } from './use-fetcher-callback';
+import { useFetcherWithCallback } from './use-fetcher-with-callback';
 
 // * language 검증
 export const isLanguage = (language: string) =>
