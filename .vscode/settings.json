@@ -17,5 +17,8 @@
   "eslint.format.enable": true,
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit"
-  }
+  },
+  "editor.quickSuggestions": {
+    "strings": "on"
+  },
 }
