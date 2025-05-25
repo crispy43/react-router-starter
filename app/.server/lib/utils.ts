@@ -21,6 +21,12 @@ export const parseFormData = async <T = any>(request: Request) => {
   return Object.fromEntries(formData) as T;
 };
 
+// * JSON 객체 추출
+export const parseJsonData = async <T = any>(request: Request) => {
+  const jsonData = await request.json();
+  return jsonData as T;
+};
+
 // * Ajv 유효성 검사
 export const validate = (schema: any, data: any) => {
   const validate = ajv.compile(schema);
@@ -34,6 +40,13 @@ export const validate = (schema: any, data: any) => {
 // * FormData 객체 추출 및 Ajv 유효성 검사
 export const validateFormData = async <T>(request: Request, schema: any) => {
   const payload = await parseFormData<T>(request);
+  validate(schema, payload);
+  return payload;
+};
+
+// * JSON 객체 추출 및 Ajv 유효성 검사
+export const validateJsonData = async <T>(request: Request, schema: any) => {
+  const payload = await parseJsonData<T>(request);
   validate(schema, payload);
   return payload;
 };
