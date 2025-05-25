@@ -144,7 +144,7 @@ export function ThemeProvider({
 
   const mountRun = useRef(false);
 
-  const broadcastThemeChange = useBroadcastChannel('remix-themes', (e) => {
+  const broadcastThemeChange = useBroadcastChannel('themes', (e) => {
     ensureCorrectTransition(() => {
       setTheme(e.data);
     });
