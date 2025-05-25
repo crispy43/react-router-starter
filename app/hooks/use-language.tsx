@@ -3,7 +3,7 @@ import { createContext, type Dispatch, type SetStateAction, use, useState } from
 import { DEFAULT_LANGUAGE, LANGUAGES } from '~/common/constants';
 
 import type { Route } from '../routes/apis/+types/language';
-import { useFetcherCallback } from './use-fetcher-callback';
+import { useFetcherWithCallback } from './use-fetcher-callback';
 
 // * language 검증
 export const isLanguage = (language: string) =>
@@ -31,7 +31,7 @@ export const LanguageProvider = ({
     return DEFAULT_LANGUAGE.split('-')[0];
   });
 
-  const fetcher = useFetcherCallback<Route.ComponentProps['actionData']>(
+  const fetcher = useFetcherWithCallback<Route.ComponentProps['actionData']>(
     ({ message, language }) => {
       if (message) console.error(message);
       if (language) setLanguage(language);
