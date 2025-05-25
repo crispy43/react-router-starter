@@ -53,7 +53,7 @@ yarn start
 ├── .yarn
 │   ├── install-state.gz    # 설치 패키지 상태 파일
 │   └── releases            # Yarn 파일
-├── app                     # 리믹스 App 폴더
+├── app                     # 리액트라우터 App 폴더
 │   ├── .server             # Vite 서버사이드 전용 폴더
 │   │   ├── controllers     # Request&Response 컨트롤러
 │   │   ├── lib             # 유틸리티 (서버 사이드에서만 사용)
@@ -139,23 +139,23 @@ const [language, setLanguage] = useLanguage();
 
 `language`로 현재 적용된 언어 코드를 확인할 수 있습니다. 언어 변경은 `setLanguage('en')`처럼 변경할 언어 코드를 `setLanguage`함수의 인자로 사용하면 됩니다. 테마와 마찬가지로 세션에 영구 저장되므로 다음 접속 때도 동일한 언어 설정이 유지됩니다.
 
-#### useFetcherCallback
+#### useFetcherWithCallback
 
-리액트라우터의 `useFetcher`를 래핑한 훅입니다. `useFetcherCallback`을 사용하면 응답 처리에 대한 추가 코드 없이 응답이 완료된 경우에 즉시 실행할 콜백 함수를 인자로 전달하여 처리하도록 할 수 있습니다.
+리액트라우터의 `useFetcher`를 래핑한 훅입니다. `useFetcherWithCallback`을 사용하면 응답 처리에 대한 추가 코드 없이 응답이 완료된 경우에 즉시 실행할 콜백 함수를 인자로 전달하여 처리하도록 할 수 있습니다.
 
 ```tsx
-import { useFetcherCallback } from '~/hooks/use-fetcher-callback';
+import { useFetcherWithCallback } from '~/hooks/use-fetcher-callback';
 
 export default function SomeComponent() {
-  const fetcher = useFetcherCallback((data) => console.log(data));
+  const fetcher = useFetcherWithCallback((data) => console.log(data));
   // ...
 }
 ```
 
-`useFetcherCallback`의 응답 데이터 타입은 리액트라우터의 typegen으로 생성된 응답 타입을 제네릭으로 주입하여 적용할 수 있습니다.
+`useFetcherWithCallback`의 응답 데이터 타입은 리액트라우터의 typegen으로 생성된 응답 타입을 제네릭으로 주입하여 적용할 수 있습니다.
 
 ```tsx
-import { useFetcherCallback } from '~/hooks/use-fetcher-callback';
+import { useFetcherWithCallback } from '~/hooks/use-fetcher-callback';
 
 import type { Route } from '../routes/apis/+types/page';
 
@@ -165,7 +165,7 @@ export const action = async ({ params }) => {
 };
 
 export default function Page() {
-  const fetcher = useFetcherCallback<Route.ComponentProps['actionData']>(
+  const fetcher = useFetcherWithCallback<Route.ComponentProps['actionData']>(
     (data) => console.log(data), // { user: { name: string; } }
   );
   // ...
@@ -345,7 +345,7 @@ export default function SomePage({ loaderData, actionData }: Route.ComponentProp
 
 ### 다국어 현지화
 
-i18n 관련 라이브러리를 사용하지 않지만, 본 프로젝트에서는 리믹스 프레임워크의 SSR 형태에 맞게 다국어 옵션을 사용할 수 있습니다. i18n을 사용하는 것과 유사하지만 번역 텍스트가 서버사이드에서 먼저 렌더링되는 차이점이 있습니다.
+i18n 관련 라이브러리를 사용하지 않지만, 본 프로젝트에서는 리액트라우터 프레임워크의 SSR 형태에 맞게 다국어 옵션을 사용할 수 있습니다. i18n을 사용하는 것과 유사하지만 번역 텍스트가 서버사이드에서 먼저 렌더링되는 차이점이 있습니다.
 
 #### localize
 
