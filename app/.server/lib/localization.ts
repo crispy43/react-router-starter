@@ -7,15 +7,17 @@ import { getLanguageSession } from '../services/session.service';
 
 // * language 코드
 export const getAcceptLanguage = (request: Request) => {
-  return (
-    (
+  try {
+    return (
       resolveAcceptLanguage(
-        request.headers.get('accept-language')!,
+        request.headers.get('accept-language'),
         LANGUAGES,
         DEFAULT_LANGUAGE,
       ) as unknown as string
-    )?.split('-')[0] ?? DEFAULT_LANGUAGE
-  );
+    )?.split('-')[0];
+  } catch {
+    return DEFAULT_LANGUAGE.split('-')[0];
+  }
 };
 
 // * 현지화 번역 언어셋
