@@ -7,17 +7,17 @@ import { getLanguageSession } from '../services/session.service';
 
 // * language 코드
 export const getAcceptLanguage = (request: Request) => {
-  try {
-    return (
-      resolveAcceptLanguage(
-        request.headers.get('accept-language'),
-        LANGUAGES,
-        DEFAULT_LANGUAGE,
-      ) as unknown as string
-    )?.split('-')[0];
-  } catch {
+  const acceptLanguage = request.headers.get('accept-language');
+  if (!acceptLanguage) {
     return DEFAULT_LANGUAGE.split('-')[0];
   }
+  return (
+    resolveAcceptLanguage(
+      request.headers.get('accept-language'),
+      LANGUAGES,
+      DEFAULT_LANGUAGE,
+    ) as unknown as string
+  )?.split('-')[0];
 };
 
 // * 현지화 번역 언어셋
@@ -30,10 +30,9 @@ export const localize: <T>(
   const commonTranslations = await import(`../locales/${language}/common.json`);
   if (namespace === 'common') {
     return commonTranslations.default;
-  } else {
-    const pageTranslations = await import(`../locales/${language}/${namespace}.json`);
-    return { ...commonTranslations.default, ...pageTranslations.default };
   }
+  const pageTranslations = await import(`../locales/${language}/${namespace}.json`);
+  return { ...commonTranslations.default, ...pageTranslations.default };
 };
 
 // * 현지화 번역 에러 메세지
