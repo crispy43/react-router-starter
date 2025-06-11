@@ -1,4 +1,4 @@
-import type { LoaderFunctionArgs } from 'react-router';
+import type { ActionFunctionArgs } from 'react-router';
 
 import { type UpdateLanguage, updateLanguageSchema } from '~/.server/schemas/language';
 import { isLanguage } from '~/hooks/use-language';
@@ -9,7 +9,7 @@ import { localizedError } from '../lib/localization';
 import { toJson, validateFormData } from '../lib/utils';
 import { getLanguageSession } from '../services/session.service';
 
-export const languageAction = async ({ request }: LoaderFunctionArgs) => {
+export const languageAction = async ({ request }: ActionFunctionArgs) => {
   switch (request.method) {
     case 'POST': {
       const payload = await validateFormData<UpdateLanguage>(
