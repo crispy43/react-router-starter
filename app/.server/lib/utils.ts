@@ -1,13 +1,17 @@
+import type { ExtendedJSONSchema } from 'json-schema-to-ts';
 import type { ActionFunctionArgs, LoaderFunctionArgs, Params } from 'react-router';
 
-import type { ToJson } from '~/common/types';
+import type { ServerException, ToJson } from '~/common/types';
 import ajv from '~/lib/ajv';
 
 import { DeferredData } from './defer';
-import { AjvInvalidException, HttpException } from './exception';
+import { AjvInvalidException, HttpException } from './exceptions';
 
-// * ENV 가져오기
-export const getEnv = (name: string, defaultValue?: string) => {
+// load server utilities
+export default function serverUtils() {}
+
+// * 환경변수 가져오기
+export const env = (name: string, defaultValue?: string) => {
   const env = process.env[name];
   if (!env && !defaultValue) {
     throw new Error(`Please define the ${name} environment variable.`);
@@ -24,11 +28,17 @@ export const parseFormData = async <T = any>(request: Request) => {
 // * JSON 객체 추출
 export const parseJsonData = async <T = any>(request: Request) => {
   const jsonData = await request.json();
-  return jsonData as T;
+  return jsonData as ToJson<T>;
+};
+
+// * URL에서 searchParams(쿼리스트링)를 Object 형태로 파싱
+export const parseSearchParams = <T = any>(url: string) => {
+  const urlObj = new URL(url).searchParams;
+  return Object.fromEntries(urlObj) as T;
 };
 
 // * Ajv 유효성 검사
-export const validate = (schema: any, data: any) => {
+export const validate = (schema: ExtendedJSONSchema, data: any) => {
   const validate = ajv.compile(schema);
   const valid = validate(data);
   if (!valid) {
@@ -38,27 +48,40 @@ export const validate = (schema: any, data: any) => {
 };
 
 // * FormData 객체 추출 및 Ajv 유효성 검사
-export const validateFormData = async <T>(request: Request, schema: any) => {
+export const validateFormData = async <T>(
+  request: Request,
+  schema: ExtendedJSONSchema,
+) => {
   const payload = await parseFormData<T>(request);
   validate(schema, payload);
   return payload;
 };
 
 // * JSON 객체 추출 및 Ajv 유효성 검사
-export const validateJsonData = async <T>(request: Request, schema: any) => {
+export const validateJsonData = async <T>(
+  request: Request,
+  schema: ExtendedJSONSchema,
+) => {
   const payload = await parseJsonData<T>(request);
   validate(schema, payload);
   return payload;
 };
 
+// * SearchParams(쿼리스트링) 파싱 및 Ajv 유효성 검사
+export const validateSearchParams = <T>(request: Request, schema: ExtendedJSONSchema) => {
+  const payload = parseSearchParams<T>(request.url);
+  validate(schema, payload);
+  return payload;
+};
+
 // * Params Ajv 유효성 검사
-export const validateParams = (params: Params<string>, schema: any) => {
+export const validateParams = (params: Params<string>, schema: ExtendedJSONSchema) => {
   validate(schema, params);
   return params;
 };
 
 // * JSON 타입 추론 응답 생성
-// Remix에서 json 함수가 deprecated됨에 따라 기존 함수 대채 및 JSON 직렬화 타입 추론
+// NOTE: Remix에서 json 함수가 deprecated됨에 따라 기존 함수 대채 및 JSON 직렬화 타입 추론
 export const toJson = <T = any>(data: T, options?: ResponseInit) => {
   return new Response(JSON.stringify(data), {
     ...options,
@@ -70,7 +93,7 @@ export const toJson = <T = any>(data: T, options?: ResponseInit) => {
 };
 
 // * JSON 타입 추론 지연 스트림 응답 생성
-// Remix에서 defer 함수가 deprecated됨에 따라 기존 함수 대채 및 JSON 직렬화 타입 추론
+// NOTE: Remix에서 defer 함수가 deprecated됨에 따라 기존 함수 대채 및 JSON 직렬화 타입 추론
 export const typedDefer = <T = any>(data: T, options?: ResponseInit) => {
   return new DeferredData(data as any, options) as unknown as ToJson<T>;
 };
@@ -79,7 +102,7 @@ export const typedDefer = <T = any>(data: T, options?: ResponseInit) => {
 export const control = async <T>(
   controller: (
     args?: LoaderFunctionArgs | ActionFunctionArgs,
-  ) => Promise<T & { message?: string; path?: string; details?: any }>,
+  ) => Promise<T & ServerException>,
   args?: LoaderFunctionArgs | ActionFunctionArgs,
 ): ReturnType<typeof controller> => {
   return controller(args).catch((error) => {
