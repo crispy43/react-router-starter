@@ -2,7 +2,7 @@ import { type LoaderFunctionArgs, type MetaFunction, useLoaderData } from 'react
 
 import { localize } from '~/.server/lib/localization';
 import type { WelcomeJson } from '~/.server/locales/types';
-import { Theme } from '~/common/constants';
+import { Language, Theme } from '~/common/constants';
 import LogoDark from '~/components/svg/logo-dark.svg?react';
 import LogoLight from '~/components/svg/logo-light.svg?react';
 import { Button } from '~/components/ui/button';
@@ -28,7 +28,7 @@ export default function Home() {
 
   return (
     <div className="flex h-screen flex-col items-center justify-center bg-muted-foreground/10">
-      {theme === Theme.DARK ? (
+      {theme === Theme.dark ? (
         <LogoDark className="mb-8 h-auto w-40" />
       ) : (
         <LogoLight className="mb-8 h-auto w-40" />
@@ -45,9 +45,9 @@ export default function Home() {
             </div>
             <Button
               className="w-24"
-              onClick={() => setTheme(theme === Theme.DARK ? Theme.LIGHT : Theme.DARK)}
+              onClick={() => setTheme(theme === Theme.dark ? Theme.light : Theme.dark)}
             >
-              {theme === Theme.DARK ? Theme.LIGHT : Theme.DARK}
+              {theme === Theme.dark ? Theme.light : Theme.dark}
             </Button>
           </div>
           <div className="flex flex-col justify-center gap-2">
@@ -57,9 +57,11 @@ export default function Home() {
             </div>
             <Button
               className="w-24"
-              onClick={() => setLanguage(language === 'en' ? 'ko' : 'en')}
+              onClick={() =>
+                setLanguage(language === Language.en ? Language.ko : Language.en)
+              }
             >
-              {language === 'en' ? 'ko' : 'en'}
+              {language === Language.en ? Language.ko : Language.en}
             </Button>
           </div>
         </CardContent>

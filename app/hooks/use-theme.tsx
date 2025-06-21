@@ -104,7 +104,7 @@ ThemeContext.displayName = 'ThemeContext';
 const prefersLightMQ = '(prefers-color-scheme: light)';
 
 const getPreferredTheme = () =>
-  window.matchMedia(prefersLightMQ).matches ? Theme.LIGHT : Theme.DARK;
+  window.matchMedia(prefersLightMQ).matches ? Theme.light : Theme.dark;
 
 export const mediaQuery =
   typeof window !== 'undefined' ? window.matchMedia(prefersLightMQ) : null;
@@ -170,7 +170,7 @@ export function ThemeProvider({
   useEffect(() => {
     const handleChange = (ev: MediaQueryListEvent) => {
       ensureCorrectTransition(() => {
-        setTheme(ev.matches ? Theme.LIGHT : Theme.DARK);
+        setTheme(ev.matches ? Theme.light : Theme.dark);
       });
     };
     mediaQuery?.addEventListener('change', handleChange);
@@ -188,17 +188,9 @@ const clientThemeCode = `
     ? 'light'
     : 'dark';
   const cl = document.documentElement.classList;
-  const dataAttr = document.documentElement.dataset.theme;
-  if (dataAttr != null) {
-    const themeAlreadyApplied = dataAttr === 'light' || dataAttr === 'dark';
-    if (!themeAlreadyApplied) {
-      document.documentElement.dataset.theme = theme;
-    }
-  } else {
-    const themeAlreadyApplied = cl.contains('light') || cl.contains('dark');
-    if (!themeAlreadyApplied) {
-      cl.add(theme);
-    }
+  const themeAlreadyApplied = cl.contains('light') || cl.contains('dark');
+  if (!themeAlreadyApplied) {
+    cl.add(theme);
   }
   const meta = document.querySelector('meta[name=color-scheme]');
   if (meta) {

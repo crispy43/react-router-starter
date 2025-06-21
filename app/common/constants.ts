@@ -1,9 +1,13 @@
 // * locale
 export const LANGUAGES = ['en-US', 'ko-KR'] as const;
-export const DEFAULT_LANGUAGE = 'en-US';
+export const DEFAULT_LANGUAGE = 'ko-KR'; // 기본 언어
+export enum Language {
+  en = 'en',
+  ko = 'ko',
+}
 
 // * theme
 export enum Theme {
-  DARK = 'dark',
-  LIGHT = 'light',
+  dark = 'dark',
+  light = 'light',
 }
