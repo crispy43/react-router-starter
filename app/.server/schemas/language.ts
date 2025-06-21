@@ -4,11 +4,14 @@
 
 import type { FromSchema } from 'json-schema-to-ts';
 
+import { LANGUAGES } from '~/common/constants';
+
 export const updateLanguageSchema = {
   type: 'object',
   properties: {
     language: {
       type: 'string',
+      enum: LANGUAGES.map((lang) => lang.split('-')[0]),
       description: '변경하려는 언어 코드',
     },
   },

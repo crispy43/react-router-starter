@@ -15,7 +15,7 @@ export class HttpException extends Error {
   }
 }
 
-// * 유효하지 않은 데이터 예외 처리
+// * 400: 유효하지 않은 데이터 예외 처리
 export class InvalidException extends HttpException {
   constructor(message: string, path?: string) {
     super(400, message, path);
@@ -25,7 +25,7 @@ export class InvalidException extends HttpException {
   }
 }
 
-// * Ajv 유효성 검사 실패 예외 처리
+// * 400: Ajv 유효성 검사 실패 예외 처리
 export class AjvInvalidException extends HttpException {
   constructor(errors: ErrorObject[]) {
     const path = errors[0].instancePath.replace(/^\//, '');
@@ -36,7 +36,7 @@ export class AjvInvalidException extends HttpException {
   }
 }
 
-// * 인증 실패 예외 처리
+// * 401: 인증 실패 예외 처리
 export class UnauthorizedException extends HttpException {
   constructor(message?: string) {
     super(401, message ?? 'Unauthorized');
@@ -46,7 +46,7 @@ export class UnauthorizedException extends HttpException {
   }
 }
 
-// * 권한 없음 예외 처리
+// * 403: 권한 없음 예외 처리
 export class ForbiddenException extends HttpException {
   constructor(message?: string) {
     super(403, message ?? 'Forbidden');
@@ -56,7 +56,7 @@ export class ForbiddenException extends HttpException {
   }
 }
 
-// * 존재하지 않는 데이터 예외 처리
+// * 404: 존재하지 않는 데이터 예외 처리
 export class NotFoundException extends HttpException {
   constructor(message: string, path?: string) {
     super(404, message, path);
@@ -66,7 +66,7 @@ export class NotFoundException extends HttpException {
   }
 }
 
-// * 허용되지 않은 요청 예외 처리
+// * 405: 허용되지 않은 요청 예외 처리
 export class MethodNotAllowedException extends HttpException {
   constructor(message?: string) {
     super(405, message ?? 'Method Not Allowed');
@@ -76,7 +76,7 @@ export class MethodNotAllowedException extends HttpException {
   }
 }
 
-// * 이미 존재하는 데이터 예외 처리
+// * 409: 이미 존재하는 데이터 예외 처리
 export class AlreadyExistsException extends HttpException {
   constructor(message: string, path?: string) {
     super(409, message, path);

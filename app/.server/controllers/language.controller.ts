@@ -4,7 +4,7 @@ import { type UpdateLanguage, updateLanguageSchema } from '~/.server/schemas/lan
 import { isLanguage } from '~/hooks/use-language';
 import { replaceT } from '~/lib/utils';
 
-import { InvalidException, MethodNotAllowedException } from '../lib/exception';
+import { InvalidException, MethodNotAllowedException } from '../lib/exceptions';
 import { localizedError } from '../lib/localization';
 import { toJson, validateFormData } from '../lib/utils';
 import { getLanguageSession } from '../services/session.service';

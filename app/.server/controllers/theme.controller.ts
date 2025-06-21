@@ -4,7 +4,7 @@ import { Theme } from '~/common/constants';
 import { isTheme } from '~/hooks/use-theme';
 import { replaceT } from '~/lib/utils';
 
-import { InvalidException, MethodNotAllowedException } from '../lib/exception';
+import { InvalidException, MethodNotAllowedException } from '../lib/exceptions';
 import { localizedError } from '../lib/localization';
 import { getThemeSession } from '../services/session.service';
 
