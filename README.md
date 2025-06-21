@@ -152,12 +152,10 @@ export default function SomeComponent() {
 }
 ```
 
-`useFetcherWithCallback`의 응답 데이터 타입은 리액트라우터의 typegen으로 생성된 응답 타입을 제네릭으로 주입하여 적용할 수 있습니다.
+`useFetcherWithCallback`의 응답 데이터 타입 적용은 useFetcher에서 제네릭으로 주입하는 것과 동일합니다.
 
 ```tsx
 import { useFetcherWithCallback } from '~/hooks/use-fetcher-callback';
-
-import type { Route } from '../routes/apis/+types/page';
 
 export const action = async ({ params }) => {
   const user = { name: params.name };
@@ -165,7 +163,7 @@ export const action = async ({ params }) => {
 };
 
 export default function Page() {
-  const fetcher = useFetcherWithCallback<Route.ComponentProps['actionData']>(
+  const fetcher = useFetcherWithCallback<typeof action>(
     (data) => console.log(data), // { user: { name: string; } }
   );
   // ...
@@ -266,14 +264,14 @@ export const action = async (args: ActionFunctionArgs) => {
 };
 
 export default function SomePage({ actionData }: Route.ComponentProps) {
+  const data = useActionData<typeof action>();
+
   return (
     <Form>
       <input name="email" type="email" />
-      {actionData?.path === 'email' && actionData?.message && <p>{actionData.message}</p>}
+      {data?.path === 'email' && data?.message && <p>{data.message}</p>}
       <input name="password" type="password" />
-      {actionData?.path === 'password' && actionData?.message && (
-        <p>{actionData.message}</p>
-      )}
+      {data?.path === 'password' && data?.message && <p>{data.message}</p>}
       <button type="submit">로그인</button>
     </Form>
   );
@@ -374,7 +372,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 export type WelcomeJson = typeof import('../locales/en/welcome.json');
 ```
 
-화면에 언어 텍스트 적용 아래 코드처럼 `t`를 `useJsonLoaderData` 훅으로 가져와서 사용합니다.
+화면에 언어 텍스트 적용 아래 코드처럼 `t`를 `useLoaderData` 훅으로 가져와서 사용합니다.
 
 ```tsx
 // /app/.server/locales/en/welcome.json = { "welcome": "Welcome to React Router!" }
@@ -385,8 +383,9 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   return { t };
 };
 
-export default function Index({ loaderData }: Route.ComponentProps) {
-  const { t } = loaderData;
+export default function Index() {
+  const { t } = useLoaderDate<typeof loader>();
+
   return <p>{t.welcome}</p>;
   // 언어가 en인 경우 <p>Welcome to React Router!</p>
   // 언어가 ko인 경우 <p>React Router에 오신 것을 환영합니다!</p>

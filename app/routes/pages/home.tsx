@@ -1,4 +1,4 @@
-import type { LoaderFunctionArgs, MetaFunction } from 'react-router';
+import { type LoaderFunctionArgs, type MetaFunction, useLoaderData } from 'react-router';
 
 import { localize } from '~/.server/lib/localization';
 import type { WelcomeJson } from '~/.server/locales/types';
@@ -11,8 +11,6 @@ import { Label } from '~/components/ui/label';
 import { useLanguage } from '~/hooks/use-language';
 import { useTheme } from '~/hooks/use-theme';
 
-import type { Route } from './+types/home';
-
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const t = await localize<WelcomeJson>(request, 'welcome');
   return { t };
@@ -23,8 +21,8 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
   return [{ title: t.meta.title }, { name: 'description', content: t.meta.description }];
 };
 
-export default function Home({ loaderData }: Route.ComponentProps) {
-  const { t } = loaderData;
+export default function Home() {
+  const { t } = useLoaderData<typeof loader>();
   const [language, setLanguage] = useLanguage();
   const [theme, setTheme] = useTheme();
 
