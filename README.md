@@ -102,7 +102,7 @@ Base UI의 [useRender](https://base-ui.com/react/utils/use-render) 훅을 사용
 ```tsx
 // useRender의 기본 랜더인 button 태그 프로퍼티를 상속
 export interface ButtonProps extends useRender.ComponentProps<'button'> {
-  variant?: 'primary' | 'secondary' | 'outline'; // 커스텀 prop
+  variant?: 'primary' | 'secondary'; // 커스텀 prop
 }
 
 export const Button = ({
