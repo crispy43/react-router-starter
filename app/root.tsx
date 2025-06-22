@@ -52,7 +52,9 @@ export const App = ({ lang, ssrTheme }: Route.ComponentProps['loaderData']) => {
         <Links />
       </head>
       <body>
-        <Outlet />
+        <div className="root">
+          <Outlet />
+        </div>
         <ScrollRestoration />
         <Scripts />
       </body>
