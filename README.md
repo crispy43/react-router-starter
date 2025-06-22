@@ -1,13 +1,13 @@
 # React Router Starter
 
-[tailwindcss](https://tailwindcss.com/)(버전4)와 [shadcn/ui](https://ui.shadcn.com/)가 적용된 [React Router](https://reactrouter.com/)(버전7)스타터 탬플릿입니다.
+[TailwindCSS](https://tailwindcss.com/)(버전4)와 [Base UI](https://base-ui.com/)로 바로 시작할 수 있는 [React Router](https://reactrouter.com/)(버전7)스타터 탬플릿입니다.
 라이트&다크 테마 변경과 다국어 현지화 언어셋을 사용할 수 있습니다.
 [Ajv](https://ajv.js.org/)가 포함되어 있으므로 데이터 구조의 유효성 검사는 [JSON schema](https://json-schema.org/) 형식을 사용하는 것을 권장합니다.
 
 ## 설치
 
 로컬에 20버전 이상의 node.js가 설치되어 있어야합니다.
-패키지 매니저는 yarn 4.7.0 버전을 사용합니다.
+패키지 매니저는 yarn 4.9.2 버전을 사용합니다.
 
 패키지 설치하기
 
@@ -51,7 +51,6 @@ yarn start
 ├── .vscode
 │   └── settings.json       # VS Code 설정 파일 (저장시 eslint와 prettier 포맷팅)
 ├── .yarn
-│   ├── install-state.gz    # 설치 패키지 상태 파일
 │   └── releases            # Yarn 파일
 ├── app                     # 리액트라우터 App 폴더
 │   ├── .server             # Vite 서버사이드 전용 폴더
@@ -68,13 +67,13 @@ yarn start
 │   │   └── types.d.ts      # 공통 타입
 │   ├── components          # 컴포넌트
 │   │   ├── svg             # svg 파일 폴더 (SVGR로 리액트 컴포넌트로 사용)
-│   │   └── ui              # shadcn/ui 컴포넌트 폴더
+│   │   └── ui              # 프리미티브 컴포넌트 폴더
 │   ├── hooks               # 커스텀 훅
 │   ├── lib                 # 유틸리티
 │   ├── routes              # 경로 폴더
 │   │   ├── apis            # API 경로 폴더
 │   │   └── pages           # 리액트 페이지 경로 폴더
-│   ├── app.css             # tailwindcss 및 shadcn/ui 스타일 설정
+│   ├── app.css             # TailwindCSS 스타일 설정
 │   ├── root.tsx            # 리액트라우터 Root 파일
 │   └── routes.ts           # 경로 설정 파일
 ├── public
@@ -86,7 +85,6 @@ yarn start
 ├── .prettierignore         # Prettier 제외 파일
 ├── .prettierrc.cjs         # Prettier 설정 파일
 ├── .yarnrc.yml             # Yarn 설정 파일
-├── components.json         # shadcn/ui 설정 파일
 ├── package.json            # node.js 패키지 설정 파일
 ├── react-router.config.ts  # 리액트라우터 설정 파일
 ├── README.md               # README 파일
