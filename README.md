@@ -67,7 +67,7 @@ yarn start
 │   │   └── types.d.ts      # 공통 타입
 │   ├── components          # 컴포넌트
 │   │   ├── svg             # svg 파일 폴더 (SVGR로 리액트 컴포넌트로 사용)
-│   │   └── ui              # 프리미티브 컴포넌트 폴더
+│   │   └── ui              # 커스텀 UI 컴포넌트 폴더
 │   ├── hooks               # 커스텀 훅
 │   ├── lib                 # 유틸리티
 │   ├── routes              # 경로 폴더
@@ -94,6 +94,48 @@ yarn start
 ```
 
 ## 가이드
+
+### Base UI 기반 커스텀 컴포넌트
+
+Base UI의 [useRender](https://base-ui.com/react/utils/use-render) 훅을 사용해 `render` prop를 사용하는 커스텀 컴포넌트를 만들 수 있습니다. 아래는 Button 커스텀 컴포넌트를 만드는 예시 코드입니다.
+
+```tsx
+// useRender의 기본 랜더인 button 태그 프로퍼티를 상속
+export interface ButtonProps extends useRender.ComponentProps<'button'> {
+  variant?: 'primary' | 'secondary' | 'outline'; // 커스텀 prop
+}
+
+export const Button = ({
+  render = <button />, // 기본 render 태그 또는 컴포넌트 지정
+  variant = 'primary',
+  ...props
+}: ButtonProps) => {
+  // 기본 스타일 및 variant에 따라 스타일 분기
+  const className = clsx('h-10 rounded-md px-4', {
+    'bg-primary text-primary-foreground': variant === 'primary',
+    'bg-secondary text-secondary-foreground': variant === 'secondary',
+  });
+
+  const element = useRender({
+    render,
+    props: mergeProps(
+      {
+        type: 'button',
+        className,
+      },
+      props,
+    ),
+  });
+
+  return element;
+};
+```
+
+`render` prop는 아래 코드처럼 `button` 태그를 랜더하지 않고 리액트 라우터의 `Link` 컴포넌트로 랜더하도록 대채할 수 있습니다. Radix UI나 shadcn/ui의 asChild를 사용하는 것과 유사합니다.
+
+```tsx
+<Button render={<Link to="/details" />}>상세보기</Button>
+```
 
 ### SVGR
 
@@ -261,7 +303,7 @@ export const action = async (args: ActionFunctionArgs) => {
   return control(loginAction, args);
 };
 
-export default function SomePage({ actionData }: Route.ComponentProps) {
+export default function SomePage() {
   const data = useActionData<typeof action>();
 
   return (
