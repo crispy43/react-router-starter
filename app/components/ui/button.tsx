@@ -7,11 +7,11 @@ export interface ButtonProps extends useRender.ComponentProps<'button'> {
   variant?: 'primary' | 'secondary' | 'outline';
 }
 
-export function Button({
+export const Button = ({
   render = <button />,
   variant = 'primary',
   ...props
-}: ButtonProps) {
+}: ButtonProps) => {
   const internalRef = useRef<HTMLButtonElement | null>(null);
 
   const className = clsx('h-10 rounded-md px-4', {
@@ -35,4 +35,4 @@ export function Button({
   });
 
   return element;
-}
+};
