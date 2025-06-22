@@ -5,6 +5,7 @@ import type { WelcomeJson } from '~/.server/locales/types';
 import { Language, Theme } from '~/common/constants';
 import LogoDark from '~/components/svg/logo-dark.svg?react';
 import LogoLight from '~/components/svg/logo-light.svg?react';
+import { Button } from '~/components/ui/button';
 import { useLanguage } from '~/hooks/use-language';
 import { useTheme } from '~/hooks/use-theme';
 
@@ -30,7 +31,7 @@ export default function Home() {
       ) : (
         <LogoLight className="mb-8 h-auto w-40" />
       )}
-      <div className="flex w-full max-w-sm flex-col">
+      <div className="flex w-full max-w-md flex-col rounded-2xl border p-10">
         <div>
           <h1 className="text-xl font-bold">{t.welcome}</h1>
         </div>
@@ -40,26 +41,26 @@ export default function Home() {
               <label className="text-lg">{t.word.theme}:</label>
               <p className="text-lg">{theme}</p>
             </div>
-            <button
+            <Button
               className="w-24"
               onClick={() => setTheme(theme === Theme.dark ? Theme.light : Theme.dark)}
             >
               {theme === Theme.dark ? Theme.light : Theme.dark}
-            </button>
+            </Button>
           </div>
           <div className="flex flex-col justify-center gap-2">
             <div className="flex items-center gap-2">
               <label className="text-lg">{t.word.language}:</label>
               <p className="text-lg">{language}</p>
             </div>
-            <button
+            <Button
               className="w-24"
               onClick={() =>
                 setLanguage(language === Language.en ? Language.ko : Language.en)
               }
             >
               {language === Language.en ? Language.ko : Language.en}
-            </button>
+            </Button>
           </div>
         </div>
       </div>
