@@ -23,7 +23,7 @@ export const getAcceptLanguage = (request: Request) => {
 // * 현지화 번역 언어셋
 export const localize: <T>(
   request: Request,
-  namespace: string,
+  namespace?: string,
 ) => Promise<CommonJson & T> = async (request, namespace = 'common') => {
   const languageSession = await getLanguageSession(request);
   const language = languageSession.getLanguage();
