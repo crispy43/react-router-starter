@@ -102,9 +102,9 @@ export const typedDefer = <T = any>(data: T, options?: ResponseInit) => {
 export const control = async <T>(
   controller: (
     args?: LoaderFunctionArgs | ActionFunctionArgs,
-  ) => Promise<ToSerialized<T & ServerException>>,
+  ) => Promise<Response | ToSerialized<T & ServerException>>,
   args?: LoaderFunctionArgs | ActionFunctionArgs,
-): ReturnType<typeof controller> => {
+): Promise<ToSerialized<T & ServerException>> => {
   return controller(args).catch((error) => {
     if (error instanceof HttpException) {
       return toJson(
