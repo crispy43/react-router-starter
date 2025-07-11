@@ -1,7 +1,7 @@
 import type { ExtendedJSONSchema } from 'json-schema-to-ts';
 import type { ActionFunctionArgs, LoaderFunctionArgs, Params } from 'react-router';
 
-import type { ServerException, ToJson } from '~/common/types';
+import type { ServerException, ToJson, ToSerialized } from '~/common/types';
 import ajv from '~/lib/ajv';
 
 import { DeferredData } from './defer';
@@ -102,7 +102,7 @@ export const typedDefer = <T = any>(data: T, options?: ResponseInit) => {
 export const control = async <T>(
   controller: (
     args?: LoaderFunctionArgs | ActionFunctionArgs,
-  ) => Promise<T & ServerException>,
+  ) => Promise<ToSerialized<T & ServerException>>,
   args?: LoaderFunctionArgs | ActionFunctionArgs,
 ): ReturnType<typeof controller> => {
   return controller(args).catch((error) => {
@@ -121,5 +121,5 @@ export const control = async <T>(
       console.error(error);
       return toJson({ message: 'Unknown Error' }, { status: 500 });
     }
-  }) as ReturnType<typeof controller>;
+  }) as Promise<ToSerialized<T & ServerException>>;
 };

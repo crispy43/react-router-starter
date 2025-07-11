@@ -5,6 +5,34 @@ export interface ServerException {
   details?: any; // 추가 세부 정보
 }
 
+// * Serialized 직렬화 타입 추론
+// NOTE: React Router 프레임워크가 처리하는 Serialize 타입 추론을 단순화 시킨 버전
+export type ToSerialized<T> = T extends string | number | boolean | null
+  ? T // 기본 타입은 그대로 반환
+  : T extends ObjectId
+    ? ArrayBufferView // ObjectId는 ArrayBufferView로 반환
+    : T extends undefined
+      ? never // undefined는 반환하지 않음
+      : T extends (...args: any[]) => any
+        ? never // 함수는 반환하지 않음
+        : T extends bigint
+          ? bigint
+          : T extends symbol
+            ? never // symbol은 반환하지 않음
+            : T extends Promise<infer U>
+              ? Promise<ToSerialized<U>> // Promise의 반환 타입에 ToSerialized 적용
+              : T extends ArrayBuffer | ArrayBufferView
+                ? ArrayBufferView // ArrayBuffer로 반환
+                : T extends Set<infer U>
+                  ? Set<U> // Set
+                  : T extends Map<infer U, infer V>
+                    ? Map<U, V> // Map
+                    : T extends Date
+                      ? Date // Date는 ISO 문자열로 변환
+                      : T extends Array<infer U>
+                        ? Array<ToSerialized<U>> // 배열은 재귀적으로 변환
+                        : { [K in keyof T]: ToSerialized<T[K]> };
+
 // * JSON 직렬화 타입 추론
 // NOTE: Serializable하지 않은 타입은 loader와 action 함수에서 반환 시 타입 유실 발생하므로,
 // NOTE: 타입 유실 방지를 위해 toJson 함수로 JSON 직렬화 반환하는 경우 사용
