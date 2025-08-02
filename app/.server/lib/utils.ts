@@ -100,11 +100,9 @@ export const typedDefer = <T = any>(data: T, options?: ResponseInit) => {
 
 // * 컨트롤러 호출 및 에러 예외 처리
 export const control = async <T>(
-  controller: (
-    args?: LoaderFunctionArgs | ActionFunctionArgs,
-  ) => Promise<Response | ToSerialized<T & ServerException>>,
+  controller: (args?: LoaderFunctionArgs | ActionFunctionArgs) => Promise<T>,
   args?: LoaderFunctionArgs | ActionFunctionArgs,
-): Promise<ToSerialized<T & ServerException>> => {
+): Promise<Response | (ToSerialized<T> & ToJson<ServerException>)> => {
   return controller(args).catch((error) => {
     if (error instanceof HttpException) {
       return toJson(
@@ -121,5 +119,5 @@ export const control = async <T>(
       console.error(error);
       return toJson({ message: 'Unknown Error' }, { status: 500 });
     }
-  }) as Promise<ToSerialized<T & ServerException>>;
+  }) as Promise<Response | (ToSerialized<T> & ToJson<ServerException>)>;
 };
