@@ -24,7 +24,16 @@ export const toComma = (
 export const formatQuery = (params: Record<string, any>) => {
   const searchParams = new URLSearchParams();
   Object.entries(params).forEach(([key, value]) => {
-    if (typeof value !== 'undefined') searchParams.append(key, String(value));
+    if (typeof value === 'undefined') return;
+    if (Array.isArray(value)) {
+      value.forEach((v) => {
+        if (typeof v !== 'undefined') {
+          searchParams.append(key, String(v));
+        }
+      });
+    } else {
+      searchParams.append(key, String(value));
+    }
   });
   return searchParams.toString();
 };
