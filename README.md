@@ -187,7 +187,7 @@ const [language, setLanguage] = useLanguage();
 import { useFetcherWithCallback } from '~/hooks/use-fetcher-callback';
 
 export default function SomeComponent() {
-  const fetcher = useFetcherWithCallback((data) => console.log(data));
+  const { fetcher } = useFetcherWithCallback((data) => console.log(data));
   // ...
 }
 ```
@@ -199,12 +199,38 @@ import { useFetcherWithCallback } from '~/hooks/use-fetcher-callback';
 
 export const action = async ({ params }) => {
   const user = { name: params.name };
-  return toJson({ user });
+  return { user };
 };
 
 export default function Page() {
-  const fetcher = useFetcherWithCallback<typeof action>(
+  const { fetcher } = useFetcherWithCallback<typeof action>(
     (data) => console.log(data), // { user: { name: string; } }
+  );
+  // ...
+}
+```
+
+`isLoading`플래그를 통해 fetcher가 데이터 로딩 상태인지 구분할 수 있습니다.
+
+```tsx
+import { useFetcherWithCallback } from '~/hooks/use-fetcher-callback';
+
+export const action = async ({ params }) => {
+  const user = { name: params.name };
+  return { user };
+};
+
+export default function Page() {
+  const [user, setUser] = useState<{ name: string } | null>(null);
+  const { isLoading, fetcher } = useFetcherWithCallback<typeof action>((data) =>
+    setUser(data.user),
+  );
+  // ...
+  return (
+    <div>
+      {isLoading && <p>로딩 중...</p>}
+      {/* ... */}
+    </div>
   );
   // ...
 }

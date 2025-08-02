@@ -31,7 +31,7 @@ export const LanguageProvider = ({
     return DEFAULT_LANGUAGE.split('-')[0];
   });
 
-  const fetcher = useFetcherWithCallback<Route.ComponentProps['actionData']>(
+  const { fetcher } = useFetcherWithCallback<Route.ComponentProps['actionData']>(
     ({ message, language }) => {
       if (message) console.error(message);
       if (language) setLanguage(language);
