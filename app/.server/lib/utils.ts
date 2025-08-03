@@ -7,9 +7,6 @@ import ajv from '~/lib/ajv';
 import { DeferredData } from './defer';
 import { AjvInvalidException, HttpException } from './exceptions';
 
-// load server utilities
-export default function serverUtils() {}
-
 // * 환경변수 가져오기
 export const env = (name: string, defaultValue?: string) => {
   const env = process.env[name];
