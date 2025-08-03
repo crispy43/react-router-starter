@@ -33,8 +33,13 @@ export const parseJsonData = async <T = any>(request: Request) => {
 
 // * URL에서 searchParams(쿼리스트링)를 Object 형태로 파싱
 export const parseSearchParams = <T = any>(url: string) => {
-  const urlObj = new URL(url).searchParams;
-  return Object.fromEntries(urlObj) as T;
+  const params = new URL(url).searchParams;
+  const result: Record<string, string | string[]> = {};
+  for (const key of new Set(params.keys())) {
+    const all = params.getAll(key).map((v) => decodeURIComponent(v));
+    result[key] = all.length > 1 ? all : all[0];
+  }
+  return result as T;
 };
 
 // * Ajv 유효성 검사

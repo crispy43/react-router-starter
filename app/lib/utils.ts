@@ -28,11 +28,11 @@ export const formatQuery = (params: Record<string, any>) => {
     if (Array.isArray(value)) {
       value.forEach((v) => {
         if (typeof v !== 'undefined') {
-          searchParams.append(key, String(v));
+          searchParams.append(key, encodeURIComponent(String(v)));
         }
       });
     } else {
-      searchParams.append(key, String(value));
+      searchParams.append(key, encodeURIComponent(String(value)));
     }
   });
   return searchParams.toString();
