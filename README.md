@@ -179,31 +179,31 @@ const [language, setLanguage] = useLanguage();
 
 `language`로 현재 적용된 언어 코드를 확인할 수 있습니다. 언어 변경은 `setLanguage('en')`처럼 변경할 언어 코드를 `setLanguage`함수의 인자로 사용하면 됩니다. 테마와 마찬가지로 세션에 영구 저장되므로 다음 접속 때도 동일한 언어 설정이 유지됩니다.
 
-#### useFetcherWithCallback
+#### useEasyFetcher
 
-리액트라우터의 `useFetcher`를 래핑한 훅입니다. `useFetcherWithCallback`을 사용하면 응답 처리에 대한 추가 코드 없이 응답이 완료된 경우에 즉시 실행할 콜백 함수를 인자로 전달하여 처리하도록 할 수 있습니다.
+리액트라우터의 `useFetcher`를 래핑한 훅입니다. `useEasyFetcher`을 사용하면 응답 처리에 대한 추가 코드 없이 응답이 완료된 경우에 즉시 실행할 콜백 함수를 인자로 전달하여 처리하도록 할 수 있습니다.
 
 ```tsx
-import { useFetcherWithCallback } from '~/hooks/use-fetcher-callback';
+import useEasyFetcher from '~/hooks/use-easy-fetcher';
 
 export default function SomeComponent() {
-  const { fetcher } = useFetcherWithCallback((data) => console.log(data));
+  const { fetcher } = useEasyFetcher((data) => console.log(data));
   // ...
 }
 ```
 
-`useFetcherWithCallback`의 응답 데이터 타입 적용은 useFetcher에서 제네릭으로 주입하는 것과 동일합니다.
+`useEasyFetcher`의 응답 데이터 타입 적용은 useFetcher에서 제네릭으로 주입하는 것과 동일합니다.
 
 ```tsx
-import { useFetcherWithCallback } from '~/hooks/use-fetcher-callback';
+import useEasyFetcher from '~/hooks/use-easy-fetcher';
 
 export const action = async ({ params }) => {
   const user = { name: params.name };
-  return { user };
+  return toJson({ user });
 };
 
 export default function Page() {
-  const { fetcher } = useFetcherWithCallback<typeof action>(
+  const { fetcher } = useEasyFetcher<typeof action>(
     (data) => console.log(data), // { user: { name: string; } }
   );
   // ...
@@ -213,7 +213,7 @@ export default function Page() {
 `isLoading`플래그를 통해 fetcher가 데이터 로딩 상태인지 구분할 수 있습니다.
 
 ```tsx
-import { useFetcherWithCallback } from '~/hooks/use-fetcher-callback';
+import { useEasyFetcher } from '~/hooks/use-fetcher-callback';
 
 export const action = async ({ params }) => {
   const user = { name: params.name };
@@ -222,7 +222,7 @@ export const action = async ({ params }) => {
 
 export default function Page() {
   const [user, setUser] = useState<{ name: string } | null>(null);
-  const { isLoading, fetcher } = useFetcherWithCallback<typeof action>((data) =>
+  const { isLoading, fetcher } = useEasyFetcher<typeof action>((data) =>
     setUser(data.user),
   );
   // ...
