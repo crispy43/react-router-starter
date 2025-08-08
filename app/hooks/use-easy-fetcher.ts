@@ -3,7 +3,7 @@ import { useFetcher } from 'react-router';
 
 // * useFetcher 간편한 사용을 위한 래핑 훅
 export default function useEasyFetcher<T>(
-  callback: (data: ReturnType<typeof useFetcher<T>>['data']) => void,
+  callback?: (data: ReturnType<typeof useFetcher<T>>['data']) => void,
   key?: string,
 ) {
   const fetcher = useFetcher<T>({ key });
@@ -27,7 +27,7 @@ export default function useEasyFetcher<T>(
   useEffect(() => {
     if (isLoading && fetcher.state === 'idle' && fetcher.data) {
       setIsLoading(false);
-      callback(fetcher.data);
+      callback?.(fetcher.data);
     }
   }, [fetcher.state, fetcher.data, isLoading, callback]);
 

@@ -13,7 +13,6 @@ import {
 
 import { getLanguageSession, getThemeSession } from './.server/services/session.service';
 import type { Route } from './+types/root';
-import { LanguageProvider } from './hooks/use-language';
 import { PreventFlashOnWrongTheme, ThemeProvider, useTheme } from './hooks/use-theme';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
@@ -63,14 +62,12 @@ export const App = ({ lang, ssrTheme }: Route.ComponentProps['loaderData']) => {
 };
 
 export default function AppWithProviders({ loaderData }: Route.ComponentProps) {
-  const { lang, ssrTheme } = loaderData;
+  const { ssrTheme } = loaderData;
 
   return (
-    <LanguageProvider specifiedLanguage={lang} languageAction="/api/language">
-      <ThemeProvider specifiedTheme={ssrTheme} themeAction="/api/theme">
-        <App {...loaderData} />
-      </ThemeProvider>
-    </LanguageProvider>
+    <ThemeProvider specifiedTheme={ssrTheme} themeAction="/api/theme">
+      <App {...loaderData} />
+    </ThemeProvider>
   );
 }
 
