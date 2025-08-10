@@ -27,8 +27,12 @@ export default function useEasyFetcher<T>(
   useEffect(() => {
     if (isLoading && fetcher.state === 'idle') {
       setIsLoading(false);
-      if (fetcher.data) callback?.(fetcher.data);
     }
+    if (fetcher.state === 'idle' && fetcher.data && callback) {
+      callback(fetcher.data);
+      fetcher.data = null; // reset data after callback
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fetcher.state, fetcher.data, isLoading, callback]);
 
   return { fetcher: wrappedFetcher, isLoading };
