@@ -25,9 +25,9 @@ export default function useEasyFetcher<T>(
   }, [fetcher]);
 
   useEffect(() => {
-    if (isLoading && fetcher.state === 'idle' && fetcher.data) {
+    if (isLoading && fetcher.state === 'idle') {
       setIsLoading(false);
-      callback?.(fetcher.data);
+      if (fetcher.data) callback?.(fetcher.data);
     }
   }, [fetcher.state, fetcher.data, isLoading, callback]);
 
