@@ -1,5 +1,4 @@
-import { mergeProps } from '@base-ui-components/react/merge-props';
-import { useRender } from '@base-ui-components/react/use-render';
+import { mergeProps, useRender } from '@base-ui/react';
 import clsx from 'clsx';
 import { useRef } from 'react';
 

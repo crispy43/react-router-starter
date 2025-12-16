@@ -13,9 +13,9 @@
     "prepare": "simple-git-hooks"
   },
   "dependencies": {
-    "@base-ui-components/react": "^1.0.0-beta.0",
-    "@react-router/node": "^7.6.0",
-    "@react-router/serve": "^7.6.0",
+    "@base-ui/react": "^1.0.0",
+    "@react-router/node": "^7.10.1",
+    "@react-router/serve": "^7.10.1",
     "ajv": "^8.17.1",
     "ajv-errors": "^3.0.0",
     "ajv-formats": "^3.0.1",
@@ -23,17 +23,17 @@
     "clsx": "^2.1.1",
     "isbot": "^5.1.28",
     "lucide-react": "^0.513.0",
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0",
-    "react-router": "^7.6.0",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3",
+    "react-router": "^7.10.1",
     "resolve-accept-language": "^3.1.11"
   },
   "devDependencies": {
-    "@react-router/dev": "^7.6.0",
+    "@react-router/dev": "^7.10.1",
     "@tailwindcss/vite": "^4.1.4",
     "@types/node": "^22.15.21",
-    "@types/react": "^19.1.5",
-    "@types/react-dom": "^19.1.5",
+    "@types/react": "^19.2.7",
+    "@types/react-dom": "^19.2.3",
     "@typescript-eslint/eslint-plugin": "^6.7.4",
     "@typescript-eslint/parser": "^6.7.4",
     "eslint": "^8.38.0",
@@ -50,7 +50,6 @@
     "lint-staged": "^15.5.0",
     "prettier": "^3.5.3",
     "prettier-plugin-tailwindcss": "^0.6.12",
-    "react-router-devtools": "^5.0.6",
     "simple-git-hooks": "^2.13.0",
     "tailwindcss": "^4.1.8",
     "typescript": "^5.8.3",
@@ -60,7 +59,7 @@
     "vite-tsconfig-paths": "^5.1.4"
   },
   "engines": {
-    "node": ">=20 <=22"
+    "node": ">=20 <=23"
   },
   "packageManager": "yarn@4.9.2",
   "lint-staged": {
