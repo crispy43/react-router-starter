@@ -213,7 +213,7 @@ export default function Page() {
 `isLoading`플래그를 통해 fetcher가 데이터 로딩 상태인지 구분할 수 있습니다.
 
 ```tsx
-import { useEasyFetcher } from '~/hooks/use-fetcher-callback';
+import { useEasyFetcher } from '~/hooks/use-easy-fetcher';
 
 export const action = async ({ params }) => {
   const user = { name: params.name };
