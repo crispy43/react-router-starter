@@ -43,19 +43,15 @@ export const fetchJson = async <T = any>(
   url: string,
   options?: RequestInit,
 ): Promise<ToJson<T>> => {
-  try {
-    const response = await fetch(url, {
-      ...options,
-      headers: {
-        'Content-Type': 'application/json',
-        ...options?.headers,
-      },
-    });
-    const data = (await response.json()) as ToJson<T>;
-    return data;
-  } catch (error) {
-    throw error;
-  }
+  const response = await fetch(url, {
+    ...options,
+    headers: {
+      'Content-Type': 'application/json',
+      ...options?.headers,
+    },
+  });
+  const data = (await response.json()) as ToJson<T>;
+  return data;
 };
 
 // * Timeout promise

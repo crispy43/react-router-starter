@@ -34,7 +34,6 @@ function withoutTransition(callback: () => void) {
 
   setTimeout(() => {
     // Calling getComputedStyle forces the browser to redraw
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const _ = window.getComputedStyle(css).transition;
     document.head.removeChild(css);
   }, 0);

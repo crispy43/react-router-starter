@@ -1,10 +1,14 @@
 import type { ExtendedJSONSchema } from 'json-schema-to-ts';
-import type { ActionFunctionArgs, LoaderFunctionArgs, Params } from 'react-router';
+import {
+  type ActionFunctionArgs,
+  data,
+  type LoaderFunctionArgs,
+  type Params,
+} from 'react-router';
 
-import type { ServerException, ToJson, ToSerialized } from '~/common/types';
+import type { ToJson } from '~/common/types';
 import ajv from '~/lib/ajv';
 
-import { DeferredData } from './defer';
 import { AjvInvalidException, HttpException } from './exceptions';
 
 // * 환경변수 가져오기
@@ -84,7 +88,7 @@ export const validateParams = (params: Params<string>, schema: ExtendedJSONSchem
 
 // * JSON 타입 추론 응답 생성
 // NOTE: Remix에서 json 함수가 deprecated됨에 따라 기존 함수 대채 및 JSON 직렬화 타입 추론
-export const toJson = <T = any>(data: T, options?: ResponseInit) => {
+export const toJson = <T = any>(data: T, options?: Response) => {
   return new Response(JSON.stringify(data), {
     ...options,
     headers: {
@@ -94,20 +98,14 @@ export const toJson = <T = any>(data: T, options?: ResponseInit) => {
   }) as unknown as ToJson<T>;
 };
 
-// * JSON 타입 추론 지연 스트림 응답 생성
-// NOTE: Remix에서 defer 함수가 deprecated됨에 따라 기존 함수 대채 및 JSON 직렬화 타입 추론
-export const typedDefer = <T = any>(data: T, options?: ResponseInit) => {
-  return new DeferredData(data as any, options) as unknown as ToJson<T>;
-};
-
 // * 컨트롤러 호출 및 에러 예외 처리
 export const control = async <T>(
   controller: (args?: LoaderFunctionArgs | ActionFunctionArgs) => Promise<T>,
   args?: LoaderFunctionArgs | ActionFunctionArgs,
-): Promise<Response | (ToSerialized<T> & ToJson<ServerException>)> => {
+) => {
   return controller(args).catch((error) => {
     if (error instanceof HttpException) {
-      return toJson(
+      return data(
         {
           message: error.message,
           ...(error.path && { path: error.path }),
@@ -116,10 +114,10 @@ export const control = async <T>(
       );
     } else if (error instanceof Error) {
       console.error(error);
-      return toJson({ message: error.message }, { status: 500 });
+      return data({ message: error.message }, { status: 500 });
     } else {
       console.error(error);
-      return toJson({ message: 'Unknown Error' }, { status: 500 });
+      return data({ message: 'Unknown Error' }, { status: 500 });
     }
-  }) as Promise<Response | (ToSerialized<T> & ToJson<ServerException>)>;
+  });
 };
