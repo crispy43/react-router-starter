@@ -6,7 +6,7 @@ import {
   type Params,
 } from 'react-router';
 
-import type { ToJson } from '~/common/types';
+import type { ToJson, ToSerialized } from '~/common/types';
 import ajv from '~/lib/ajv';
 
 import { AjvInvalidException, HttpException } from './exceptions';
@@ -102,7 +102,7 @@ export const toJson = <T = any>(data: T, options?: Response) => {
 export const control = async <T>(
   controller: (args?: LoaderFunctionArgs | ActionFunctionArgs) => Promise<T>,
   args?: LoaderFunctionArgs | ActionFunctionArgs,
-) => {
+): Promise<(ToSerialized<T> & { message?: string; path?: string }) | Response> => {
   return controller(args).catch((error) => {
     if (error instanceof HttpException) {
       return data(
@@ -119,5 +119,5 @@ export const control = async <T>(
       console.error(error);
       return data({ message: 'Unknown Error' }, { status: 500 });
     }
-  });
+  }) as Promise<(ToSerialized<T> & { message?: string; path?: string }) | Response>;
 };

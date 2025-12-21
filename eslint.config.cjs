@@ -159,6 +159,7 @@ module.exports = [
 
       // TypeScript rules
       'no-undef': 'off',
+      'import/no-named-as-default': 'off',
       '@typescript-eslint/no-unused-vars': [
         'error',
         {
