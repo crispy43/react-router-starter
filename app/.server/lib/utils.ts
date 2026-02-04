@@ -1,7 +1,7 @@
 import type { ExtendedJSONSchema } from 'json-schema-to-ts';
 import { data, type Params } from 'react-router';
 
-import type { ErrorBody } from '~/common/types/common.types';
+import type { ServerException } from '~/common/types/common.types';
 import type { DataWithResponseInit, ToJson } from '~/common/types/serialize.types';
 import ajv from '~/lib/ajv';
 
@@ -95,10 +95,10 @@ export const toJson = <T = any>(data: T, options?: Response) => {
 };
 
 // * 서버사이드 예외 처리 함수
-// NOTE: HttpException 및 일반 Error 인스턴스를 구분하여 `ErrorBody` 타입의 일관된 응답 생성
+// NOTE: HttpException 및 일반 Error 인스턴스를 구분하여 `ServerException` 타입의 일관된 응답 생성
 export const handleServerError = (
   error: unknown,
-): DataWithResponseInit<{ error: ErrorBody }> => {
+): DataWithResponseInit<{ error: ServerException }> => {
   if (error instanceof HttpException) {
     return data(
       {

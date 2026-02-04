@@ -311,7 +311,7 @@ export const loginSchema = {
 } as const;
 ```
 
-`/app/.server/lib/utils.ts`의 `handleServerError` 함수를 사용하면 loader, action 과정에서 에러가 발생할 때 클라이언트를 ErrorBoundary 페이지로 보내지 않고 `ErrorBody` 타입의 에러 메세지와 상태코드를 응답하도록 할 수 있습니다. loader, action과 같은 서버사이드 코드에서 `try {} catch (error) { return handleServerError(error); }`와 같이 핸들러로 에러를 예외 처리하여 반환하도록 하면 됩니다. 클라이언트 코드에서는 `const isError = 'error' in data`와 같은 조건식으로 에러 타입 추론과 함께 화면에 에러 메세지를 띄우도록 할 수 있습니다.
+`/app/.server/lib/utils.ts`의 `handleServerError` 함수를 사용하면 loader, action 과정에서 에러가 발생할 때 클라이언트를 ErrorBoundary 페이지로 보내지 않고 `ServerException` 타입의 에러 메세지와 상태코드를 응답하도록 할 수 있습니다. loader, action과 같은 서버사이드 코드에서 `try {} catch (error) { return handleServerError(error); }`와 같이 핸들러로 에러를 예외 처리하여 반환하도록 하면 됩니다. 클라이언트 코드에서는 `const isError = 'error' in data`와 같은 조건식으로 에러 타입 추론과 함께 화면에 에러 메세지를 띄우도록 할 수 있습니다.
 
 ```tsx
 import { handleServerError } from '~/.server/lib/utils';
@@ -322,6 +322,7 @@ export const action = async (args: ActionFunctionArgs) => {
     const auth: Auth = await login(email, password);
     return auth;
   } catch (error) {
+    // ServerException { message: string; path?: string }
     return handleServerError(error);
   }
 };
