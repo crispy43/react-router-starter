@@ -49,47 +49,43 @@ yarn start
 
 ```plaintext
 ├── .vscode
-│   └── settings.json       # VS Code 설정 파일 (저장시 eslint와 prettier 포맷팅)
+│   └── settings.json           # VS Code 설정 파일 (저장시 eslint와 prettier 포맷팅)
 ├── .yarn
-│   └── releases            # Yarn 파일
-├── app                     # 리액트라우터 App 폴더
-│   ├── .server             # Vite 서버사이드 전용 폴더
-│   │   ├── controllers     # Request&Response 컨트롤러
-│   │   ├── lib             # 유틸리티 (서버 사이드에서만 사용)
-│   │   ├── locales         # 다국어 언어셋 폴더
-│   │   │   ├── en          # 영어 네임스페이스 언어셋
-│   │   │   ├── ko          # 한국어 네임스페이스 언어셋
-│   │   │   └── types.d.ts  # 언어 JSON 파일 타입 정의
-│   │   ├── schemas         # 요청 파라미터 유효성 검증 JSON Schema
-│   │   └── services        # 서비스 로직
-│   ├── common              # 공통
-│   │   ├── constants.ts    # 공통 상수
-│   │   └── types.d.ts      # 공통 타입
-│   ├── components          # 컴포넌트
-│   │   ├── svg             # svg 파일 폴더 (SVGR로 리액트 컴포넌트로 사용)
-│   │   └── ui              # 커스텀 UI 컴포넌트 폴더
-│   ├── hooks               # 커스텀 훅
-│   ├── lib                 # 유틸리티
-│   ├── routes              # 경로 폴더
-│   │   ├── apis            # API 경로 폴더
-│   │   └── pages           # 리액트 페이지 경로 폴더
-│   ├── app.css             # TailwindCSS 스타일 설정
-│   ├── root.tsx            # 리액트라우터 Root 파일
-│   └── routes.ts           # 경로 설정 파일
+│   └── releases                # Yarn 파일
+├── app                         # 리액트라우터 App 폴더
+│   ├── .server                 # Vite 서버사이드 전용 폴더
+│   │   ├── controllers         # loader, action 컨트롤러
+│   │   ├── lib                 # 유틸리티 (서버 사이드에서만 사용)
+│   │   ├── locales             # 다국어 언어셋 폴더
+│   │   ├── schemas             # 요청 파라미터 유효성 검증 JSON Schema
+│   │   └── services            # 서비스 로직
+│   ├── common                  # 공통
+│   │   ├── types               # 공통 타입 폴더
+│   │   └── constants.ts        # 공통 상수
+│   ├── components              # 컴포넌트
+│   │   ├── svg                 # svg 파일 폴더 (SVGR로 리액트 컴포넌트로 사용)
+│   │   └── ui                  # UI 컴포넌트 폴더
+│   ├── hooks                   # 커스텀 훅
+│   ├── lib                     # 유틸리티
+│   ├── routes                  # 경로 폴더
+│   │   ├── apis                # API 경로 폴더
+│   │   └── pages               # 리액트 페이지 경로 폴더
+│   ├── app.css                 # TailwindCSS 스타일 설정
+│   ├── root.tsx                # 리액트라우터 Root 파일
+│   └── routes.ts               # 경로 설정 파일
 ├── public
-│   └── favicon.ico         # 파비콘
-├── .env.example            # 환경변수 예제
-├── .eslintignore           # ES Lint 제외 파일
-├── .eslintrc.cjs           # ES Lint 설정 파일
-├── .gitignore              # Git 제외 파일
-├── .prettierignore         # Prettier 제외 파일
-├── .prettierrc.cjs         # Prettier 설정 파일
-├── .yarnrc.yml             # Yarn 설정 파일
-├── package.json            # node.js 패키지 설정 파일
-├── react-router.config.ts  # 리액트라우터 설정 파일
-├── README.md               # README 파일
-├── tsconfig.json           # 타입스크립트 설정
-├── vite.config.ts          # Vite 설정
+│   └── favicon.ico             # 파비콘
+├── .env.example                # 환경변수 예제
+├── .eslint.config.cjs          # ES Lint 설정 파일
+├── .gitignore                  # Git 제외 파일
+├── .prettierignore             # Prettier 제외 파일
+├── .prettierrc.cjs             # Prettier 설정 파일
+├── .yarnrc.yml                 # Yarn 설정 파일
+├── package.json                # node.js 패키지 설정 파일
+├── react-router.config.ts      # 리액트라우터 설정 파일
+├── README.md                   # README 파일
+├── tsconfig.json               # 타입스크립트 설정
+├── vite.config.ts              # Vite 설정
 └── yarn.lock
 ```
 
@@ -199,7 +195,7 @@ import useEasyFetcher from '~/hooks/use-easy-fetcher';
 
 export const action = async ({ params }) => {
   const user = { name: params.name };
-  return toJson({ user });
+  return { user };
 };
 
 export default function Page() {
@@ -220,7 +216,7 @@ export const action = async ({ params }) => {
   return { user };
 };
 
-export default function Page() {
+export default function UserPage() {
   const [user, setUser] = useState<{ name: string } | null>(null);
   const { isLoading, fetcher } = useEasyFetcher<typeof action>((data) =>
     setUser(data.user),
@@ -315,97 +311,37 @@ export const loginSchema = {
 } as const;
 ```
 
-`/app/.server/lib/utils.ts`의 `control` 함수를 사용하면 loader와 action 서버 처리 중 발생하는 에러를 `{ message: string; path: string; }` 형식의 일관된 json 데이터로 응답하도록 할 수 있습니다. 아래 코드처럼 `control` 함수로 action에 대한 처리 함수를 래핑하면 `message`와 `path` 값은 처리 중 에러가 발생할 때에 응답 데이터로 반환됩니다. `path` 값 비교로 어느 경로에서 발생한 에러인지 구분할 수 있습니다. `control` 함수는 `/app/.server/lib/exception.ts`의 커스텀 에러 예외들을 포함한 모든 에러를 `{ message: string; path: string; }` 구조의 json 형식으로 반환하도록 합니다.
+`/app/.server/lib/utils.ts`의 `handleServerError` 함수를 사용하면 loader, action 과정에서 에러가 발생할 때 클라이언트를 ErrorBoundary 페이지로 보내지 않고 `ErrorBody` 타입의 에러 메세지와 상태코드를 응답하도록 할 수 있습니다. loader, action과 같은 서버사이드 코드에서 `try {} catch (error) { return handleServerError(error); }`와 같이 핸들러로 에러를 예외 처리하여 반환하도록 하면 됩니다. 클라이언트 코드에서는 `const isError = 'error' in data`와 같은 조건식으로 에러 타입 추론과 함께 화면에 에러 메세지를 띄우도록 할 수 있습니다.
 
 ```tsx
-import { control } from '~/.server/lib/utils';
-
-const loginAction = async ({ request }: ActionFunctionArgs) => {
-  const { email, password } = await validateFormData<Login>(request, loginSchema);
-  // ...
-};
+import { handleServerError } from '~/.server/lib/utils';
 
 export const action = async (args: ActionFunctionArgs) => {
-  return control(loginAction, args);
+  try {
+    const { email, password } = await validateFormData<Login>(request, loginSchema);
+    const auth: Auth = await login(email, password);
+    return auth;
+  } catch (error) {
+    return handleServerError(error);
+  }
 };
 
-export default function SomePage() {
+export default function LoginPage() {
+  // data: Auth | { error: { message: string; path?: string; } };
   const data = useActionData<typeof action>();
+  const isError = 'error' in data; // 에러 유무 플래그
 
   return (
     <Form>
       <input name="email" type="email" />
-      {data?.path === 'email' && data?.message && <p>{data.message}</p>}
+      {isError && path === 'email' && <p>{data.error.message}</p>}
       <input name="password" type="password" />
-      {data?.path === 'password' && data?.message && <p>{data.message}</p>}
+      {isError && path === 'password' && <p>{data.error.message}</p>}
       <button type="submit">로그인</button>
     </Form>
   );
 }
 ```
-
-ajv 반환 에러 메세지에 다국어를 지원하려면 `errorMessage`의 에러 메세지는 키 값으로 사용하고 json 언어셋 파일에 키 값 별로 언어별 에러 메세지를 추가하면 됩니다.
-
-```typescript
-export const loginSchema = {
-  type: 'object',
-  properties: {
-    email: {
-      type: 'string',
-      format: 'email',
-      minLength: 6,
-      maxLength: 50,
-      description: '이메일',
-      errorMessage: {
-        format: 'emailFormatError',
-        minLength: 'emailMinLengthError',
-        maxLength: 'emailMaxLengthError',
-      },
-    },
-    // ...
-  },
-  // ...
-} as const;
-```
-
-```json
-{
-  "login": "로그인",
-  "emailFormatError": "이메일 형식이 올바르지 않습니다",
-  "emailMinLengthError": "이메일은 최소 6자 이상이어야 합니다",
-  "emailMaxLengthError": "이메일은 최대 50자 이하여야 합니다"
-}
-```
-
-```tsx
-export const loader = async ({ request }: LoaderFunctionArgs) => {
-  const t = await localize<LoginJson>(request, 'login');
-  return { t };
-};
-
-export const action = async (args: ActionFunctionArgs) => {
-  return control(loginAction, args);
-};
-
-export default function SomePage({ loaderData, actionData }: Route.ComponentProps) {
-  const { t } = loaderData;
-  return (
-    <Form>
-      <input name="email" type="email" />
-      {actionData?.path === 'email' && actionData?.message && (
-        <p>{t[actionData.message]}</p>
-      )}
-      <input name="password" type="password" />
-      {actionData?.path === 'password' && actionData?.message && (
-        <p>{t[actionData.message]}</p>
-      )}
-      <button type="submit">{t.login}</button>
-    </Form>
-  );
-}
-```
-
-`localize` 함수를 사용한 다국어 현지화 번역 텍스트 적용에 대한 설명은 아래 [다국어 현지화](#다국어-현지화) 내용을 참고하세요.
 
 ### 다국어 현지화
 
@@ -417,15 +353,14 @@ i18n 관련 라이브러리를 사용하지 않지만, 본 프로젝트에서는
 
 ```typescript
 import { localize } from '~/.server/lib/localization';
-import { WelcomeJson } from '~/.server/locales/types';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-  const t = await localize<WelcomeJson>(request, 'welcome');
+  const t = await localize(request, 'welcome');
   return { t };
 };
 ```
 
-`localize()` 함수를 사용할 때, 위 코드처럼 `/app/.server/locales/types.d.ts` 파일에 정의된 타입을 제네릭으로 주입하여 사용하는 언어셋 `t`의 타입 추론을 할 수 있습니다. JSON 언어 파일을 생성할 때 `types.d.ts`에 타입 정의도 함께 해주면 됩니다.
+`localize()` 함수를 사용할 때, 위 코드처럼 `/app/.server/locales/locales.types.ts` 파일에 정의된 타입을 제네릭으로 주입하여 사용하는 언어셋 `t`의 타입 추론을 할 수 있습니다. JSON 언어 파일을 생성할 때 `locales.types.ts`에 타입 정의도 함께 추가해야 합니다.
 
 ```json
 {
@@ -436,6 +371,12 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 ```typescript
 // /app/locales/types.d.ts
 export type WelcomeJson = typeof import('../locales/en/welcome.json');
+
+export type NamespaceMap = {
+  common: CommonJson;
+  // ...
+  welcome: WelcomeJson; // NamespaceMap에도 `key: json value` 형태로 추가
+};
 ```
 
 화면에 언어 텍스트 적용 아래 코드처럼 `t`를 `useLoaderData` 훅으로 가져와서 사용합니다.
@@ -445,7 +386,7 @@ export type WelcomeJson = typeof import('../locales/en/welcome.json');
 // /app/.server/locales/ko/welcome.json = { "welcome": "React Router에 오신 것을 환영합니다!" }
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-  const t = await localize<WelcomeJson>(request, 'welcome');
+  const t = await localize(request, 'welcome');
   return { t };
 };
 
@@ -476,7 +417,7 @@ export default function Index() {
 export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   const id = params.id;
   if (id !== 'someId') {
-    const t = await localize<ErrorJson>(request, 'error');
+    const t = await localize(request, 'error');
     throw new InvalidException(replaceT(t.invalid, { path: t.word.id, value: id }));
   }
   // ...
