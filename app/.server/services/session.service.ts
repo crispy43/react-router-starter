@@ -10,7 +10,7 @@ export const getLanguageSession = async (request: Request) => {
   const languageStorage = createCookieSessionStorage({
     cookie: {
       name: 'language',
-      secure: true,
+      secure: process.env.NODE_ENV === 'production',
       secrets: [process.env.SESSION_SECRET ?? ''],
       sameSite: 'lax',
       path: '/',
@@ -33,7 +33,7 @@ export const getThemeSession = async (request: Request) => {
   const themeStorage = createCookieSessionStorage({
     cookie: {
       name: 'theme',
-      secure: true,
+      secure: process.env.NODE_ENV === 'production',
       secrets: [process.env.SESSION_SECRET ?? ''],
       sameSite: 'lax',
       path: '/',

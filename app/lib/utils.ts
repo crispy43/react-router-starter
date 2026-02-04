@@ -1,4 +1,4 @@
-import type { ToJson } from '~/common/types';
+import type { ToJson } from '~/common/types/serialize.types';
 
 // * localize 템플릿 문자열 치환
 export const replaceT = (template: string, params: Record<string, string>) => {
