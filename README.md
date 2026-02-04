@@ -335,9 +335,9 @@ export default function LoginPage() {
   return (
     <Form>
       <input name="email" type="email" />
-      {isError && path === 'email' && <p>{data.error.message}</p>}
+      {isError && data.path === 'email' && <p>{data.error.message}</p>}
       <input name="password" type="password" />
-      {isError && path === 'password' && <p>{data.error.message}</p>}
+      {isError && data.path === 'password' && <p>{data.error.message}</p>}
       <button type="submit">로그인</button>
     </Form>
   );
