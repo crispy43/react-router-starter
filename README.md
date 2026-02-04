@@ -412,14 +412,14 @@ export default function Index() {
 }
 ```
 
-이후에 `replaceT` 유틸리티 함수의 첫번째 인자에는 템플릿 텍스트, 두번째 인자에는 파라미터 객체를 전달해 처리하면 `{{}}`로 감싸진 파라미터 텍스트는 전달된 객체의 매치되는 값으로 대체되게 됩니다.
+이후에 `interpolate` 유틸리티 함수의 첫번째 인자에는 템플릿 텍스트, 두번째 인자에는 파라미터 객체를 전달해 처리하면 `{{}}`로 감싸진 파라미터 텍스트는 전달된 객체의 매치되는 값으로 대체되게 됩니다.
 
 ```typescript
 export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   const id = params.id;
   if (id !== 'someId') {
     const t = await localize(request, 'error');
-    throw new InvalidException(replaceT(t.invalid, { path: t.word.id, value: id }));
+    throw new InvalidException(interpolate(t.invalid, { path: t.word.id, value: id }));
   }
   // ...
 };

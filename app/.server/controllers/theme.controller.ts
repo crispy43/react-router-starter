@@ -2,7 +2,7 @@ import type { ActionFunctionArgs } from 'react-router';
 
 import { Theme } from '~/common/constants';
 import { isTheme } from '~/hooks/use-theme';
-import { replaceT } from '~/lib/utils';
+import { interpolate } from '~/lib/utils';
 
 import { InvalidException, MethodNotAllowedException } from '../lib/exceptions';
 import { localizedError } from '../lib/localization';
@@ -17,7 +17,7 @@ export const themeAction = async ({ request }: ActionFunctionArgs) => {
         if (!isTheme(theme)) {
           const t = await localizedError(request);
           throw new InvalidException(
-            replaceT(t.invalid, { path: t.word.theme, value: theme }),
+            interpolate(t.invalid, { path: t.word.theme, value: theme }),
           );
         }
         const themeSession = await getThemeSession(request);

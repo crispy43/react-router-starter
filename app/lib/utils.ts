@@ -1,6 +1,11 @@
 // * localize 템플릿 문자열 치환
-export const replaceT = (template: string, params: Record<string, string>) => {
-  return template.replace(/{{(.*?)}}/g, (_, key) => params[key.trim()] ?? key);
+export const interpolate = (
+  template: string,
+  params: Record<string, string | number | boolean>,
+) => {
+  return template.replace(/{{\s*([\w.-]+)\s*}}/g, (_, key) =>
+    key in params ? String(params[key]) : '',
+  );
 };
 
 // * 세자리 콤마

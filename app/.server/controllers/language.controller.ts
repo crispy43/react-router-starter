@@ -2,7 +2,7 @@ import { type ActionFunctionArgs, data } from 'react-router';
 
 import { type UpdateLanguage, updateLanguageSchema } from '~/.server/schemas/language';
 import { isLanguage } from '~/hooks/use-language';
-import { replaceT } from '~/lib/utils';
+import { interpolate } from '~/lib/utils';
 
 import { InvalidException, MethodNotAllowedException } from '../lib/exceptions';
 import { localizedError } from '../lib/localization';
@@ -20,7 +20,7 @@ export const languageAction = async ({ request }: ActionFunctionArgs) => {
         if (!isLanguage(payload.language)) {
           const t = await localizedError(request);
           throw new InvalidException(
-            replaceT(t.invalid, { path: t.word.language, value: payload.language }),
+            interpolate(t.invalid, { path: t.word.language, value: payload.language }),
           );
         }
         const languageSession = await getLanguageSession(request);
