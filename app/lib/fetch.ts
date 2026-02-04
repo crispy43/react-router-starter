@@ -1,5 +1,3 @@
-import type { ToJson } from '~/common/types/serialize.types';
-
 export type FetchJsonOk<T> = {
   ok: true;
   status: number;
@@ -76,22 +74,6 @@ export async function safeFetch<T = unknown, E = unknown>(
     };
   }
 }
-
-// * 빠른 JSON 형식 fetch 유틸리티
-export const fetchJson = async <T = any>(
-  url: string,
-  options?: RequestInit,
-): Promise<ToJson<T>> => {
-  const response = await fetch(url, {
-    ...options,
-    headers: {
-      'Content-Type': 'application/json',
-      ...options?.headers,
-    },
-  });
-  const data = (await response.json()) as ToJson<T>;
-  return data;
-};
 
 // Timeout 에러 클래스
 export class TimeoutError extends Error {
