@@ -1,7 +1,6 @@
 import { type LoaderFunctionArgs, type MetaFunction, useLoaderData } from 'react-router';
 
 import { localize } from '~/.server/lib/localization';
-import type { WelcomeJson } from '~/.server/locales/types';
 import { Language, Theme } from '~/common/constants';
 import LogoDark from '~/components/svg/logo-dark.svg?react';
 import LogoLight from '~/components/svg/logo-light.svg?react';
@@ -10,7 +9,7 @@ import { useLanguage } from '~/hooks/use-language';
 import { useTheme } from '~/hooks/use-theme';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-  const t = await localize<WelcomeJson>(request, 'welcome');
+  const t = await localize(request, 'welcome');
   return { t };
 };
 
