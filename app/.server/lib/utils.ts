@@ -1,12 +1,8 @@
 import type { ExtendedJSONSchema } from 'json-schema-to-ts';
-import {
-  type ActionFunctionArgs,
-  data,
-  type LoaderFunctionArgs,
-  type Params,
-} from 'react-router';
+import { data, type Params } from 'react-router';
 
-import type { Serialized, ToJson } from '~/common/types/serialize.types';
+import type { ErrorBody } from '~/common/types/common.types';
+import type { DataWithResponseInit, ToJson } from '~/common/types/serialize.types';
 import ajv from '~/lib/ajv';
 
 import { AjvInvalidException, HttpException } from './exceptions';
@@ -98,26 +94,40 @@ export const toJson = <T = any>(data: T, options?: Response) => {
   }) as ToJson<T>;
 };
 
-// * 컨트롤러 호출 및 에러 예외 처리
-export const control = async <T>(
-  controller: (args?: LoaderFunctionArgs | ActionFunctionArgs) => Promise<T>,
-  args?: LoaderFunctionArgs | ActionFunctionArgs,
-): Promise<(Serialized<T> & { message?: string; path?: string }) | Response> => {
-  return controller(args).catch((error) => {
-    if (error instanceof HttpException) {
-      return data(
-        {
+// * 서버사이드 예외 처리 함수
+// NOTE: HttpException 및 일반 Error 인스턴스를 구분하여 `ErrorBody` 타입의 일관된 응답 생성
+export const handleServerError = (
+  error: unknown,
+): DataWithResponseInit<{ error: ErrorBody }> => {
+  if (error instanceof HttpException) {
+    return data(
+      {
+        error: {
           message: error.message,
-          ...(error.path && { path: error.path }),
+          ...(error.path ? { path: error.path } : {}),
         },
-        { status: error.status },
-      );
-    } else if (error instanceof Error) {
-      console.error(error);
-      return data({ message: error.message }, { status: 500 });
-    } else {
-      console.error(error);
-      return data({ message: 'Unknown Error' }, { status: 500 });
-    }
-  }) as Promise<(Serialized<T> & { message?: string; path?: string }) | Response>;
+      },
+      { status: error.status },
+    );
+  } else if (error instanceof Error) {
+    console.error(error);
+    return data(
+      {
+        error: {
+          message: error.message,
+        },
+      },
+      { status: 500 },
+    );
+  } else {
+    console.error(error);
+    return data(
+      {
+        error: {
+          message: 'Unknown Error',
+        },
+      },
+      { status: 500 },
+    );
+  }
 };

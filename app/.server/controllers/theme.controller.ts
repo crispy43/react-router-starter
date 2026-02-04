@@ -6,28 +6,33 @@ import { replaceT } from '~/lib/utils';
 
 import { InvalidException, MethodNotAllowedException } from '../lib/exceptions';
 import { localizedError } from '../lib/localization';
+import { handleServerError } from '../lib/utils';
 import { getThemeSession } from '../services/session.service';
 
 export const themeAction = async ({ request }: ActionFunctionArgs) => {
-  switch (request.method) {
-    case 'POST': {
-      const { theme } = (await request.json()) as { theme: Theme };
-      if (!isTheme(theme)) {
-        const t = await localizedError(request);
-        throw new InvalidException(
-          replaceT(t.invalid, { path: t.word.theme, value: theme }),
-        );
+  try {
+    switch (request.method) {
+      case 'POST': {
+        const { theme } = (await request.json()) as { theme: Theme };
+        if (!isTheme(theme)) {
+          const t = await localizedError(request);
+          throw new InvalidException(
+            replaceT(t.invalid, { path: t.word.theme, value: theme }),
+          );
+        }
+        const themeSession = await getThemeSession(request);
+        themeSession.setTheme(theme);
+        return new Response(null, {
+          status: 204,
+          headers: { 'Set-Cookie': await themeSession.commit() },
+        });
       }
-      const themeSession = await getThemeSession(request);
-      themeSession.setTheme(theme);
-      return new Response(null, {
-        status: 204,
-        headers: { 'Set-Cookie': await themeSession.commit() },
-      });
-    }
 
-    default: {
-      throw new MethodNotAllowedException();
+      default: {
+        throw new MethodNotAllowedException();
+      }
     }
+  } catch (error) {
+    return handleServerError(error);
   }
 };

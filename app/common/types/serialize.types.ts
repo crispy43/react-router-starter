@@ -130,6 +130,14 @@ export type ToJson<T, Depth extends number = 7> =
       : undefined
     : undefined;
 
+// * DataWithResponseInit 타입 (React Router 내부 타입과 동일) */
+export declare class DataWithResponseInit<D> {
+  type: string;
+  data: D;
+  init: ResponseInit | null;
+  constructor(data: D, init?: ResponseInit);
+}
+
 // ? 참조용 React Router Serialize 내부 타입
 // declare class DataWithResponseInit<D> {
 //   type: string;

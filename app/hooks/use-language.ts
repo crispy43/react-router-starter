@@ -10,9 +10,14 @@ import useEasyFetcher from './use-easy-fetcher';
 export const isLanguage = (language: string) =>
   LANGUAGES.map((lang) => lang.split('-')[0]).includes(language);
 
+// * 언어 확인/변경 훅
 export const useLanguage = () => {
   const { lang } = useRouteLoaderData<typeof loader>('root');
-  const { fetcher, isLoading } = useEasyFetcher<typeof action>();
+  const { fetcher, isLoading } = useEasyFetcher<typeof action>((data) => {
+    if ('error' in data) {
+      console.error('Language change error:', data.error.message);
+    }
+  });
   const setLanguage = (language: string) => {
     fetcher.submit({ language }, { method: 'post', action: '/api/language' });
   };

@@ -6,32 +6,36 @@ import { replaceT } from '~/lib/utils';
 
 import { InvalidException, MethodNotAllowedException } from '../lib/exceptions';
 import { localizedError } from '../lib/localization';
-import { validateFormData } from '../lib/utils';
+import { handleServerError, validateFormData } from '../lib/utils';
 import { getLanguageSession } from '../services/session.service';
 
 export const languageAction = async ({ request }: ActionFunctionArgs) => {
-  switch (request.method) {
-    case 'POST': {
-      const payload = await validateFormData<UpdateLanguage>(
-        request,
-        updateLanguageSchema,
-      );
-      if (!isLanguage(payload.language)) {
-        const t = await localizedError(request);
-        throw new InvalidException(
-          replaceT(t.invalid, { path: t.word.language, value: payload.language }),
+  try {
+    switch (request.method) {
+      case 'POST': {
+        const payload = await validateFormData<UpdateLanguage>(
+          request,
+          updateLanguageSchema,
+        );
+        if (!isLanguage(payload.language)) {
+          const t = await localizedError(request);
+          throw new InvalidException(
+            replaceT(t.invalid, { path: t.word.language, value: payload.language }),
+          );
+        }
+        const languageSession = await getLanguageSession(request);
+        languageSession.setLanguage(payload.language);
+        return data(
+          { language: payload.language },
+          { headers: { 'Set-Cookie': await languageSession.commit() } },
         );
       }
-      const languageSession = await getLanguageSession(request);
-      languageSession.setLanguage(payload.language);
-      return data(
-        { language: payload.language },
-        { headers: { 'Set-Cookie': await languageSession.commit() } },
-      );
-    }
 
-    default: {
-      throw new MethodNotAllowedException();
+      default: {
+        throw new MethodNotAllowedException();
+      }
     }
+  } catch (error) {
+    return handleServerError(error);
   }
 };

@@ -4,3 +4,9 @@ export interface ServerException {
   path?: string; // 에러 발생 경로
   details?: any; // 추가 세부 정보
 }
+
+// * 서버 에러 응답 타입
+export interface ErrorBody {
+  message: string;
+  path?: string;
+}
