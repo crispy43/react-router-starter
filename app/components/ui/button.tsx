@@ -1,13 +1,14 @@
 import { mergeProps, useRender } from '@base-ui/react';
+import { Button as BaseButton } from '@base-ui/react/button';
 import clsx from 'clsx';
 import { useRef } from 'react';
 
-export interface ButtonProps extends useRender.ComponentProps<'button'> {
+export interface ButtonProps extends useRender.ComponentProps<typeof BaseButton> {
   variant?: 'primary' | 'secondary' | 'outline';
 }
 
 export const Button = ({
-  render = <button />,
+  render = <BaseButton />,
   variant = 'primary',
   ...props
 }: ButtonProps) => {
@@ -24,13 +25,7 @@ export const Button = ({
   const element = useRender({
     render,
     ref: internalRef,
-    props: mergeProps(
-      {
-        type: 'button',
-        className,
-      },
-      props,
-    ),
+    props: mergeProps({ className }, props),
   });
 
   return element;
