@@ -112,7 +112,9 @@ export async function localize(request: Request, namespace: Namespace = 'common'
     return common;
   }
 
-  warnKeyConflicts(common as any, page as any, namespace);
+  if (process.env.NODE_ENV !== 'production') {
+    warnKeyConflicts(common as any, page as any, namespace);
+  }
 
   const merged = { ...(common as any), ...(page as any) } as CommonJson &
     NamespaceMap[typeof namespace];
